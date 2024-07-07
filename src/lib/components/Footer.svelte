@@ -4,7 +4,7 @@
 
   const routes: Record<string, Route[]> = {};
 
-  const user = $page.data.session?.user?.name;
+  const user = $page.data.session?.user;
 </script>
 
 <footer>
@@ -29,7 +29,7 @@
   {/if}
   <div class="bottom">
     {#if user}
-      <span class="user">Logged in as <a href="https://github.com/{user}">{user}</a></span>
+      <span class="user">Logged in as <a href={user.github.url!}>{user.github.login!}</a></span>
     {/if}
     <span class="copy">&copy; 2024 <a href="https://github.com/potors">potors</a> &middot; All rights reserved.</span>
   </div>
