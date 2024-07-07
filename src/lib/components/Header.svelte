@@ -1,12 +1,8 @@
 <script lang="ts">
+  import type { Route } from "$lib";
   import { signIn, signOut } from "@auth/sveltekit/client";
 
-  type Link = {
-    label: string;
-    href: string;
-  };
-
-  const routes: Link[] = [];
+  const routes: Route[] = [];
 
   function sign(event: MouseEvent) {
     if (event.shiftKey) {

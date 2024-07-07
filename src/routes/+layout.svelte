@@ -1,11 +1,12 @@
 <script lang="ts">
   import "$lib/pico.scss";
 
-  import { Header } from "$lib/components";
+  import { Header, Footer } from "$lib/components";
 </script>
 
 <Header />
 <slot />
+<Footer />
 
 <style lang="scss">
   :global(html, body) {
