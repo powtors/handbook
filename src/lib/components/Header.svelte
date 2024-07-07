@@ -1,14 +1,28 @@
 <script lang="ts">
+  import { signIn, signOut } from "@auth/sveltekit/client";
+
   type Link = {
     label: string;
     href: string;
   };
 
   const routes: Link[] = [];
+
+  function sign(event: MouseEvent) {
+    if (event.shiftKey) {
+      event.preventDefault();
+      signIn("github");
+    }
+
+    if (event.ctrlKey) {
+      event.preventDefault();
+      signOut();
+    }
+  }
 </script>
 
 <header>
-  <a href="/">
+  <a href="/" on:contextmenu={sign}>
     <h1>Handbook</h1>
   </a>
   <nav>
