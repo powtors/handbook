@@ -17,6 +17,9 @@ importers:
       marked:
         specifier: ^13.0.2
         version: 13.0.2
+      marked-footnote:
+        specifier: ^1.2.2
+        version: 1.2.2(marked@13.0.2)
       marked-gfm-heading-id:
         specifier: ^4.0.0
         version: 4.0.0(marked@13.0.2)
@@ -909,6 +912,11 @@ packages:
 
   magic-string@0.30.10:
     resolution: {integrity: sha512-iIRwTIf0QKV3UAnYK4PU8uiEc4SRh5jX0mwpIwETPpHdhVM4f53RSwS/vXvN1JhGX+Cs7B8qIq3d6AH49O5fAQ==}
+
+  marked-footnote@1.2.2:
+    resolution: {integrity: sha512-TFBEHwHLSSedub7P6XHHs+dMMOnDeNV5+kFDo4trU//gDd8iM57lg9jr9NGwDifPwLllHwKmFcRNp5uYvO2Fnw==}
+    peerDependencies:
+      marked: '>=7.0.0'
 
   marked-gfm-heading-id@4.0.0:
     resolution: {integrity: sha512-p53gp+nBIGeryucXzUFP8w67wtpin68+jOFBPw5m9FUfqx2ngAunO/I6KU6J3Xm3fyuv2JsSDxz0Z+pYVrHrwg==}
@@ -2153,6 +2161,10 @@ snapshots:
   magic-string@0.30.10:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.4.15
+
+  marked-footnote@1.2.2(marked@13.0.2):
+    dependencies:
+      marked: 13.0.2
 
   marked-gfm-heading-id@4.0.0(marked@13.0.2):
     dependencies:

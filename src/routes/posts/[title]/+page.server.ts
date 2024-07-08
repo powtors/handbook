@@ -4,8 +4,10 @@ import db, { type Post, type Author } from "$lib/db";
 import fs from "fs/promises";
 import { marked } from 'marked';
 import { gfmHeadingId } from "marked-gfm-heading-id";
+import footnote from "marked-footnote";
 
 const headings = gfmHeadingId({ prefix: "" });
+const footnotes = footnote({ prefixId: ":" });
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
   const title = params.title.replaceAll("_", " ");
@@ -28,6 +30,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
   // FIXME: SANITIZE MARKDOWN OUTPUT!!
   const html = await marked
     .use(headings)
+    .use(footnotes)
     .parse(markdown);
 
   return {

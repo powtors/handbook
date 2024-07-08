@@ -13,12 +13,14 @@
   });
 
   onMount(async () => {
-    // Link Headings
     const markdown = document.querySelector(".markdown")!;
-    const headings: NodeListOf<HTMLElement> = markdown.querySelectorAll("h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]");
+    
+    // Change footnotes heading id from '<prefix>label' to '<prefix>footnotes'
+    const footnotes = markdown.querySelector(".footnotes")!;
+    footnotes.firstElementChild!.id = footnotes.firstElementChild!.id.replace(/label$/, "footnotes");
 
-    console.log(headings);
-
+    // Link Headings
+    const headings: HTMLElement[] = Array.from(markdown.querySelectorAll("h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]"));
     for (const heading of headings) {
       const visit = () => goto(`#${heading.id}`);
 

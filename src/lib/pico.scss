@@ -40,4 +40,28 @@
   h4[id][role=link] { --pico-color: var(--pico-h4-color); }
   h5[id][role=link] { --pico-color: var(--pico-h5-color); }
   h6[id][role=link] { --pico-color: var(--pico-h6-color); }
+
+  /* Footnotes */
+  sup > a {
+    text-decoration: none;
+  }
+
+  .footnotes {
+    ol {
+      --pico-typography-spacing-vertical: 0.25rem;
+
+      padding-left: 2ch;
+    }
+
+    li::marker {
+      font-size: 0.8em;
+
+      color: var(--pico-muted-color);
+    }
+  }
+
+  /* Override pico's default table alignment behavior */
+  th, td {
+    text-align: revert-layer;
+  }
 }
