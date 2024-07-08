@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+  import { goto } from '$app/navigation';
+
   export let data;
 
   const { post } = data;
@@ -8,6 +11,25 @@
     month: "short",
     year: "numeric",
   });
+
+  onMount(async () => {
+    // Link Headings
+    const markdown = document.querySelector(".markdown")!;
+    const headings: NodeListOf<HTMLElement> = markdown.querySelectorAll("h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]");
+
+    console.log(headings);
+
+    for (const heading of headings) {
+      const visit = () => goto(`#${heading.id}`);
+
+      heading.role = "link";
+      heading.tabIndex = 0;
+      heading.onmousedown = visit;
+      heading.onkeydown = (e) => {
+        if ([' ', '\n'].includes(e.key)) visit();
+      }
+    }
+  });
 </script>
 
 <main class="container">
@@ -15,7 +37,7 @@
     <header>
       <h1>{post.title}</h1>
     </header>
-    <section>
+    <section class="markdown">
       {@html post.html}
     </section>
     <footer>

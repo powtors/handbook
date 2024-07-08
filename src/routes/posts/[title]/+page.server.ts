@@ -3,6 +3,9 @@ import { error } from "@sveltejs/kit";
 import db, { type Post, type Author } from "$lib/db";
 import fs from "fs/promises";
 import { marked } from 'marked';
+import { gfmHeadingId } from "marked-gfm-heading-id";
+
+const headings = gfmHeadingId({ prefix: "" });
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
   const title = params.title.replaceAll("_", " ");
@@ -24,6 +27,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 
   // FIXME: SANITIZE MARKDOWN OUTPUT!!
   const html = await marked
+    .use(headings)
     .parse(markdown);
 
   return {
