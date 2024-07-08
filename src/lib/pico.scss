@@ -64,4 +64,12 @@
   th, td {
     text-align: revert-layer;
   }
+
+  blockquote :last-child {
+    margin-bottom: 0;
+  }
+
+  > :first-child {
+    margin-top: 0;
+  }
 }

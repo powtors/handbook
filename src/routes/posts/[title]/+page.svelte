@@ -12,9 +12,9 @@
     year: "numeric",
   });
 
+  let markdown: HTMLElement;
+
   onMount(async () => {
-    const markdown = document.querySelector(".markdown")!;
-    
     // Change footnotes heading id from '<prefix>label' to '<prefix>footnotes'
     const footnotes = markdown.querySelector(".footnotes")!;
     footnotes.firstElementChild!.id = footnotes.firstElementChild!.id.replace(/label$/, "footnotes");
@@ -22,13 +22,16 @@
     // Link Headings
     const headings: HTMLElement[] = Array.from(markdown.querySelectorAll("h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]"));
     for (const heading of headings) {
-      const visit = () => goto(`#${heading.id}`);
+      const visit = () => goto(`#${heading.id}`, { keepFocus: true });
 
       heading.role = "link";
       heading.tabIndex = 0;
       heading.onmousedown = visit;
-      heading.onkeydown = (e) => {
-        if ([' ', '\n'].includes(e.key)) visit();
+      heading.onkeydown = (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          visit();
+        }
       }
     }
   });
@@ -39,7 +42,7 @@
     <header>
       <h1>{post.title}</h1>
     </header>
-    <section class="markdown">
+    <section class="markdown" bind:this={markdown}>
       {@html post.html}
     </section>
     <footer>
@@ -58,7 +61,17 @@
 </main>
 
 <style lang="scss">
+  main {
+    display: flex;
+    flex-direction: column;
+  }
+
   article {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
     > * > :global(:last-child) {
       margin-bottom: 0;
     }
@@ -68,7 +81,10 @@
     }
 
     section {
+      flex: 1;
+
       padding: var(--pico-spacing);
+      margin-bottom: 0;
     }
 
     footer {
