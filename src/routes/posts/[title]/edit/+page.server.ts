@@ -4,16 +4,22 @@ import db, { type Post, type Author } from "$lib/db";
 import fs from "fs/promises";
 
 export const load: PageServerLoad = async ({ parent }) => {
-  const { session } = await parent();
-  if (!session) return error(401, "Unauthorized!");
+  const data = await parent();
+
+  if (data.post.author.github != data.session?.user.github.login)
+    return error(401, "Unauthorized!");
+
+  return data;
 };
 
 export const actions = {
-  default: async (event) => {
-    const session = await event.locals.auth();
+  default: async ({ locals, request, params }) => {
+    const session = await locals.auth();
     if (!session) return error(401, "Unauthorized!");
 
-    const data = await event.request.formData();
+    const originalTitle = params.title!.replaceAll("_", " ");
+
+    const data = await request.formData();
 
     const title = data.get("title")?.toString();
     const description = data.get("description")?.toString();
@@ -24,7 +30,7 @@ export const actions = {
     const [author]: [Author?] = await db`SELECT * FROM authors WHERE github = ${session.user.github.login}`;
     if (!author) return error(401, "Unauthorized!");
 
-    const [post]: [Post?] = await db`INSERT INTO posts (author, title, description) VALUES (${author.id}, ${title}, ${description ?? null}) RETURNING *`;
+    const [post]: [Post?] = await db`UPDATE posts SET author = ${author.id}, title = ${title}, description = ${description ?? null} WHERE title = ${originalTitle} RETURNING *`;
     if (!post) return error(500, "Internal Server Error")
 
     await fs.writeFile(`posts/${post.id}.md`, markdown);

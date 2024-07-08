@@ -1,13 +1,19 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
-  let titleValid = false;
-  let markdownValid = false;
+  export let data;
+
+  let titleValid = true;
+  let markdownValid = true;
 
   let titleInput: HTMLInputElement;
+  let markdownTextArea: HTMLTextAreaElement;
 
   onMount(async () => {
-    titleInput.focus();
+    titleInput.value = data.post.title;
+    markdownTextArea.value = data.post.markdown;
+
+    markdownTextArea.focus();
   });
 
   $: valid = titleValid && markdownValid;
@@ -28,10 +34,11 @@
         />
       </header>
       <textarea name="markdown" required
+        bind:this={markdownTextArea}
         on:input={(e) => (markdownValid = !!e.currentTarget.value)}
       ></textarea>
       <footer>
-        <button type="submit" disabled={!valid}>Publish</button>
+        <button type="submit" disabled={!valid}>Finish</button>
       </footer>
     </article>
   </form>
