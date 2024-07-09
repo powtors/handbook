@@ -1,22 +1,19 @@
+<!-- TODO: make a component for this "edit page" thing to reutilize with "new" one, only setting the initial values -->
 <script lang="ts">
   import { onMount } from "svelte";
 
   export let data;
 
-  let titleValid = true;
-  let markdownValid = true;
-
-  let titleInput: HTMLInputElement;
-  let markdownTextArea: HTMLTextAreaElement;
-
+  let autofocus: HTMLElement;
   onMount(async () => {
-    titleInput.value = data.post.title;
-    markdownTextArea.value = data.post.markdown;
-
-    markdownTextArea.focus();
+    autofocus.focus();
   });
 
-  $: valid = titleValid && markdownValid;
+  $: title = data.post.title;
+  $: markdown = data.post.markdown;
+  $: description = data.post.description ?? "";
+
+  $: valid = !!title && !!markdown && !!description;
 </script>
 
 <main class="container">
@@ -25,18 +22,21 @@
       <header>
         <input name="title" type="text" required
           placeholder="Title"
-          bind:this={titleInput}
-          on:input={(e) => {
-            titleValid = !!e.currentTarget.value;
-            // @ts-ignore
-            e.currentTarget.ariaInvalid = !titleValid;
-          }}
+          bind:value={title}
+          on:input={(e) => e.currentTarget.ariaInvalid = `${!title}` }
         />
+        <input name="description" type="hidden" required bind:value={description} />
+        <div contenteditable
+          aria-hidden="true"
+          data-len={`${description.length}/${256}`}
+          bind:innerText={description}
+          on:input={e => {
+            e.currentTarget.ariaInvalid = `${description.length > 256}`;
+            e.currentTarget.dataset.len = `${description.length}/256`;
+          }}>
+        </div>
       </header>
-      <textarea name="markdown" required
-        bind:this={markdownTextArea}
-        on:input={(e) => (markdownValid = !!e.currentTarget.value)}
-      ></textarea>
+      <textarea name="markdown" required bind:value={markdown} bind:this={autofocus}></textarea>
       <footer>
         <button type="submit" disabled={!valid}>Finish</button>
       </footer>

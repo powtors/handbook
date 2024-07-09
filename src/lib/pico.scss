@@ -73,3 +73,55 @@
     margin-top: 0;
   }
 }
+
+/* Mimic pico's textarea on common div */
+div[contenteditable] {
+  --pico-background-color: var(--pico-form-element-background-color);
+  --pico-border-color: var(--pico-form-element-border-color);
+  --pico-color: var(--pico-form-element-color);
+  --pico-box-shadow: none;
+
+  border: var(--pico-border-width) solid var(--pico-border-color);
+  border-radius: var(--pico-border-radius);
+  outline: none;
+  background-color: var(--pico-background-color);
+  box-shadow: var(--pico-box-shadow);
+  color: var(--pico-color);
+  font-weight: var(--pico-font-weight);
+  transition:
+    background-color var(--pico-transition),
+    border-color var(--pico-transition),
+    color var(--pico-transition),
+    box-shadow var(--pico-transition);
+
+  appearance: none;
+  padding:
+    var(--pico-form-element-spacing-vertical)
+    var(--pico-form-element-spacing-horizontal);
+}
+
+div[contenteditable][data-len] {
+  position: relative;
+
+  &:global([aria-invalid=true]) {
+    --pico-border-color: var(--pico-form-element-invalid-border-color);
+
+    &::after {
+      color: var(--pico-form-element-invalid-border-color);
+    }
+  }
+
+  &::after {
+    content: attr(data-len);
+
+    position: absolute;
+
+    bottom: calc(var(--pico-form-element-spacing-vertical) * 0.33);
+    right: calc(var(--pico-form-element-spacing-horizontal) * 0.25);
+
+    font-size: 0.525em;
+    line-height: 1em;
+
+    color: var(--pico-muted-color);
+  }
+}

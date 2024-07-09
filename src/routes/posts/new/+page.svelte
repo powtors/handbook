@@ -1,16 +1,16 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
-  let titleValid = false;
-  let markdownValid = false;
-
-  let titleInput: HTMLInputElement;
-
+  let autofocus: HTMLElement;
   onMount(async () => {
-    titleInput.focus();
+    autofocus.focus();
   });
 
-  $: valid = titleValid && markdownValid;
+  $: title = "";
+  $: markdown = "";
+  $: description = "";
+
+  $: valid = !!title && !!markdown && !!description;
 </script>
 
 <main class="container">
@@ -19,17 +19,21 @@
       <header>
         <input name="title" type="text" required
           placeholder="Title"
-          bind:this={titleInput}
-          on:input={(e) => {
-            titleValid = !!e.currentTarget.value;
-            // @ts-ignore
-            e.currentTarget.ariaInvalid = !titleValid;
-          }}
+          bind:value={title}
+          on:input={(e) => e.currentTarget.ariaInvalid = `${!title}` }
         />
+        <input name="description" type="hidden" required bind:value={description} />
+        <div class="description" contenteditable
+          aria-hidden="true"
+          data-len={`${description.length}/${256}`}
+          bind:innerText={description}
+          on:input={e => {
+            e.currentTarget.ariaInvalid = `${description.length > 256}`;
+            e.currentTarget.dataset.len = `${description.length}/256`;
+          }}>
+        </div>
       </header>
-      <textarea name="markdown" required
-        on:input={(e) => (markdownValid = !!e.currentTarget.value)}
-      ></textarea>
+      <textarea name="markdown" required bind:value={markdown} bind:this={autofocus}></textarea>
       <footer>
         <button type="submit" disabled={!valid}>Publish</button>
       </footer>

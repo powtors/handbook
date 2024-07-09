@@ -7,7 +7,7 @@ CREATE TABLE posts (
   id SERIAL PRIMARY KEY,
   author UUID NOT NULL,
   title VARCHAR(128) UNIQUE NOT NULL,
-  description TEXT,
+  description VARCHAR(256),
   created_at TIMESTAMP NOT NULL DEFAULT now(),
   updated_at TIMESTAMP,
   CONSTRAINT fk_author FOREIGN KEY(author) REFERENCES authors(id)

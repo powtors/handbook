@@ -22,7 +22,7 @@ export const actions = {
     const data = await request.formData();
 
     const title = data.get("title")?.toString();
-    const description = data.get("description")?.toString();
+    const description = data.get("description")?.toString().slice(0, 256);
     const markdown = data.get("markdown")?.toString();
 
     if (!title || !markdown) return error(400, "Bad request!");
