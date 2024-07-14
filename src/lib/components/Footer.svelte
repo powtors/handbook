@@ -29,7 +29,7 @@
   {/if}
   <div class="bottom">
     {#if user}
-      <span class="user">Logged in as <a href={user.github.url!}>{user.github.login!}</a></span>
+      <span class="user">Logged in as <a href={user.github.url!}>{user.github.user!}</a></span>
     {/if}
     <span class="copy">&copy; 2024 <a href="https://github.com/potors">potors</a> &middot; All rights reserved.</span>
   </div>

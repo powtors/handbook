@@ -6,9 +6,10 @@ declare module "@auth/sveltekit" {
     user: {
       github: {
         id: number;
-        login: string;
+        user: string;
         url: string;
       }
+      authorization: string;
     } & DefaultSession["user"];
   }
 }
@@ -16,16 +17,22 @@ declare module "@auth/sveltekit" {
 export const { handle } = SvelteKitAuth({
   providers: [Github],
   callbacks: {
-    jwt({ token, profile }) {
-      if (!profile) return token;
+    jwt({ token, profile, account }) {
+      if (!account) return token;
+      token.authorization = account.access_token!;
 
-      const { id, login, html_url: url } = profile;
-      token.github = { id, login, url };
+      if (!profile) return token;
+      token.github = {
+        id: profile.id,
+        user: profile.login,
+        url: profile.html_url
+      };
 
       return token;
     },
     session({ session, token }) {
       session.user.github = token.github as any;
+      session.user.authorization = token.authorization as any;
 
       return session;
     }
