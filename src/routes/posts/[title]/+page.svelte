@@ -1,26 +1,21 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
+  import { prettyDate } from "$lib";
 
   export let data;
 
   const { post } = data;
-
-  const formatter = new Intl.DateTimeFormat(navigator.language, {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
 
   let markdown: HTMLElement;
 
   onMount(async () => {
     // Change footnotes heading id from '<prefix>label' to '<prefix>footnotes'
     const footnotes = markdown.querySelector(".footnotes")!;
-    footnotes.firstElementChild!.id = footnotes.firstElementChild!.id.replace(/label$/, "footnotes");
+    if (footnotes) footnotes.firstElementChild!.id = footnotes.firstElementChild!.id.replace(/label$/, "footnotes");
 
     // Link Headings
-    const headings: HTMLElement[] = Array.from(markdown.querySelectorAll("h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]"));
+    const headings = markdown.querySelectorAll<HTMLElement>("h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]");
     for (const heading of headings) {
       const visit = () => goto(`#${heading.id}`, { keepFocus: true });
 
@@ -54,7 +49,17 @@
           <b>{post.author.name}</b>
         </a>
         <br />
-        <small>{formatter.format(post.created_at)}</small>
+        <small>
+          {#if post.updated_at}
+            <span class="dimmed">
+              {prettyDate(post.updated_at)}
+              &nbsp;
+              &middot;
+              &nbsp;
+            </span>
+          {/if}
+          {prettyDate(post.created_at)}
+        </small>
       </div>
     </footer>
   </article>
