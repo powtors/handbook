@@ -31,14 +31,15 @@
     {#if user}
       <span class="user">Logged in as <a href={user.github.url!}>{user.github.user!}</a></span>
     {/if}
-    <span class="copy">&copy; 2024 <a href="https://github.com/potors">potors</a> &middot; All rights reserved.</span>
+    <span class="copy"
+      >&copy; 2024 <a href="https://github.com/potors">potors</a> &middot; All rights reserved.</span
+    >
   </div>
 </footer>
 
 <style lang="scss">
   footer {
-    padding:
-      calc(var(--pico-block-spacing-vertical) * 1.625)
+    padding: calc(var(--pico-block-spacing-vertical) * 1.625)
       calc(var(--pico-block-spacing-horizontal) * 1.375);
 
     border-top: 1px solid var(--pico-muted-border-color);
@@ -46,13 +47,13 @@
   }
 
   hr {
-    margin: calc(var(--pico-block-spacing-vertical)* 1.625) 0;
+    margin: calc(var(--pico-block-spacing-vertical) * 1.625) 0;
   }
 
   .links {
     display: flex;
     flex-wrap: wrap;
-    
+
     gap: 1rem;
 
     aside {

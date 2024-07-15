@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { goto } from '$app/navigation';
+  import { onMount } from "svelte";
+  import { goto } from "$app/navigation";
   import { prettyDate } from "$lib";
 
   export let data;
@@ -12,10 +12,16 @@
   onMount(async () => {
     // Change footnotes heading id from '<prefix>label' to '<prefix>footnotes'
     const footnotes = markdown.querySelector(".footnotes")!;
-    if (footnotes) footnotes.firstElementChild!.id = footnotes.firstElementChild!.id.replace(/label$/, "footnotes");
+    if (footnotes)
+      footnotes.firstElementChild!.id = footnotes.firstElementChild!.id.replace(
+        /label$/,
+        "footnotes"
+      );
 
     // Link Headings
-    const headings = markdown.querySelectorAll<HTMLElement>("h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]");
+    const headings = markdown.querySelectorAll<HTMLElement>(
+      "h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]"
+    );
     for (const heading of headings) {
       const visit = () => goto(`#${heading.id}`, { keepFocus: true });
 
@@ -27,7 +33,7 @@
           event.preventDefault();
           visit();
         }
-      }
+      };
     }
   });
 </script>
@@ -53,9 +59,7 @@
           {#if post.updated_at}
             <span class="dimmed">
               {prettyDate(post.updated_at)}
-              &nbsp;
-              &middot;
-              &nbsp;
+              &nbsp; &middot; &nbsp;
             </span>
           {/if}
           {prettyDate(post.created_at)}

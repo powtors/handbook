@@ -8,7 +8,12 @@
   margin-left: var(--heading-decoration-spacing);
 
   /* Ghost # before heading text */
-  h1[id], h2[id], h3[id], h4[id], h5[id], h6[id] {
+  h1[id],
+  h2[id],
+  h3[id],
+  h4[id],
+  h5[id],
+  h6[id] {
     position: relative;
 
     &:hover {
@@ -34,12 +39,24 @@
   }
 
   /* Override pico's link's accent text color */
-  h1[id][role=link] { --pico-color: var(--pico-h1-color); }
-  h2[id][role=link] { --pico-color: var(--pico-h2-color); }
-  h3[id][role=link] { --pico-color: var(--pico-h3-color); }
-  h4[id][role=link] { --pico-color: var(--pico-h4-color); }
-  h5[id][role=link] { --pico-color: var(--pico-h5-color); }
-  h6[id][role=link] { --pico-color: var(--pico-h6-color); }
+  h1[id][role="link"] {
+    --pico-color: var(--pico-h1-color);
+  }
+  h2[id][role="link"] {
+    --pico-color: var(--pico-h2-color);
+  }
+  h3[id][role="link"] {
+    --pico-color: var(--pico-h3-color);
+  }
+  h4[id][role="link"] {
+    --pico-color: var(--pico-h4-color);
+  }
+  h5[id][role="link"] {
+    --pico-color: var(--pico-h5-color);
+  }
+  h6[id][role="link"] {
+    --pico-color: var(--pico-h6-color);
+  }
 
   /* Footnotes */
   sup > a {
@@ -61,7 +78,8 @@
   }
 
   /* Override pico's default table alignment behavior */
-  th, td {
+  th,
+  td {
     text-align: revert-layer;
   }
 
@@ -95,15 +113,13 @@ div[contenteditable] {
     box-shadow var(--pico-transition);
 
   appearance: none;
-  padding:
-    var(--pico-form-element-spacing-vertical)
-    var(--pico-form-element-spacing-horizontal);
+  padding: var(--pico-form-element-spacing-vertical) var(--pico-form-element-spacing-horizontal);
 }
 
 div[contenteditable][data-len] {
   position: relative;
 
-  &:global([aria-invalid=true]) {
+  &:global([aria-invalid="true"]) {
     --pico-border-color: var(--pico-form-element-invalid-border-color);
 
     &::after {

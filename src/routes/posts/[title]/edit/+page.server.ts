@@ -6,8 +6,7 @@ import fs from "fs/promises";
 export const load: PageServerLoad = async ({ parent }) => {
   const data = await parent();
 
-  if (data.post.author.github != data.session?.user.github.user)
-    return error(401, "Unauthorized!");
+  if (data.post.author.github != data.session?.user.github.user) return error(401, "Unauthorized!");
 
   return data;
 };
@@ -27,14 +26,16 @@ export const actions = {
 
     if (!title || !markdown) return error(400, "Bad request!");
 
-    const [author]: [Author?] = await db`SELECT * FROM authors WHERE github = ${session.user.github.user}`;
+    const [author]: [Author?] =
+      await db`SELECT * FROM authors WHERE github = ${session.user.github.user}`;
     if (!author) return error(401, "Unauthorized!");
 
-    const [post]: [Post?] = await db`UPDATE posts SET author = ${author.id}, title = ${title}, description = ${description ?? null} WHERE title = ${originalTitle} RETURNING *`;
-    if (!post) return error(500, "Internal Server Error")
+    const [post]: [Post?] =
+      await db`UPDATE posts SET author = ${author.id}, title = ${title}, description = ${description ?? null} WHERE title = ${originalTitle} RETURNING *`;
+    if (!post) return error(500, "Internal Server Error");
 
     await fs.writeFile(`posts/${post.id}.md`, markdown);
 
     return redirect(301, `/posts/${title.replaceAll(" ", "_").toLowerCase()}`);
-  }
+  },
 } satisfies Actions;

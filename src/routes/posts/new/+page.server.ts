@@ -21,14 +21,16 @@ export const actions = {
 
     if (!title || !markdown) return error(400, "Bad request!");
 
-    const [author]: [Author?] = await db`SELECT * FROM authors WHERE github = ${session.user.github.user}`;
+    const [author]: [Author?] =
+      await db`SELECT * FROM authors WHERE github = ${session.user.github.user}`;
     if (!author) return error(401, "Unauthorized!");
 
-    const [post]: [Post?] = await db`INSERT INTO posts (author, title, description) VALUES (${author.id}, ${title}, ${description ?? null}) RETURNING *`;
-    if (!post) return error(500, "Internal Server Error")
+    const [post]: [Post?] =
+      await db`INSERT INTO posts (author, title, description) VALUES (${author.id}, ${title}, ${description ?? null}) RETURNING *`;
+    if (!post) return error(500, "Internal Server Error");
 
     await fs.writeFile(`posts/${post.id}.md`, markdown);
 
     return redirect(301, `/posts/${title.replaceAll(" ", "_").toLowerCase()}`);
-  }
+  },
 } satisfies Actions;

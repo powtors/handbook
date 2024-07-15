@@ -8,8 +8,7 @@ export const GET: RequestHandler = async ({ params }) => {
   const [post]: [Post?] = await db`SELECT * FROM posts WHERE LOWER(title) = LOWER(${title})`;
   if (!post) return error(404, "Post not found!");
 
-  const markdown = await fs.readFile(`posts/${post.id}.md`)
-    .then(buffer => buffer.toString());
+  const markdown = await fs.readFile(`posts/${post.id}.md`).then((buffer) => buffer.toString());
 
   return text(markdown);
-}
+};

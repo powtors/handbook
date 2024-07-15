@@ -40,9 +40,7 @@
     align-items: center;
     justify-content: space-between;
 
-    padding:
-      var(--pico-block-spacing-vertical)
-      calc(var(--pico-block-spacing-horizontal) * 1.375);
+    padding: var(--pico-block-spacing-vertical) calc(var(--pico-block-spacing-horizontal) * 1.375);
 
     border-bottom: 1px solid var(--pico-muted-border-color);
     margin-bottom: var(--pico-block-spacing-vertical);
@@ -50,7 +48,7 @@
 
   nav {
     --pico-nav-element-spacing-vertical: 0;
-  
+
     a {
       text-decoration: none;
     }

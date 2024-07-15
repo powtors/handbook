@@ -13,7 +13,7 @@
     display: contents;
   }
 
-   :global(.editor) {
+  :global(.editor) {
     height: 100%;
   }
 </style>

@@ -2,13 +2,14 @@
   import type { Post } from "$lib/db";
   import type { GithubUser } from "$lib/cache";
   import { prettyDate, type Modify } from "$lib";
-  import { onMount } from 'svelte';
+  import { onMount } from "svelte";
 
   let posts: Modify<Post, { author: GithubUser }>[] = $state([]);
-  
+
   async function fetchPosts(take: number = 1) {
-    const _posts = await fetch(`/posts?skip=${posts.length}${take > 0 ? "&take=" + take : ""}`)
-      .then(async res => await res.json());
+    const _posts = await fetch(
+      `/posts?skip=${posts.length}${take > 0 ? "&take=" + take : ""}`
+    ).then(async (res) => await res.json());
 
     posts = [...posts, ..._posts];
   }
@@ -35,9 +36,7 @@
             {prettyDate(post.created_at)}
             {#if post.updated_at}
               <span class="dimmed">
-                &nbsp;
-                &middot;
-                &nbsp;
+                &nbsp; &middot; &nbsp;
                 {prettyDate(post.updated_at)}
               </span>
             {/if}

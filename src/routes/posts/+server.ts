@@ -16,11 +16,13 @@ export const GET: RequestHandler = async ({ locals, url }) => {
     OFFSET ${skip}
     ${take ? db`LIMIT ${take}` : db`LIMIT ALL`}`;
 
-  const output = await Promise.all(posts.map(async post => {
-    const author = await getUser(post.github, session?.user.authorization);
+  const output = await Promise.all(
+    posts.map(async (post) => {
+      const author = await getUser(post.github, session?.user.authorization);
 
-    return { ...post, author };
-  }));
+      return { ...post, author };
+    })
+  );
 
   return json(output);
-}
+};

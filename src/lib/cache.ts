@@ -16,15 +16,18 @@ export async function getUser(name: string, authorization?: string): Promise<Git
   if (authorization) headers["Authorization"] = `Bearer ${authorization}`;
 
   const author = await fetch(`https://api.github.com/users/${name}`, { headers })
-    .then(async res => await res.json())
-    .then(user => ({
-      id: user.id,
-      name: user.name,
-      user: user.login,
-      url: user.html_url,
-      avatar: user.avatar_url,
-    } as GithubUser));
+    .then(async (res) => await res.json())
+    .then(
+      (user) =>
+        ({
+          id: user.id,
+          name: user.name,
+          user: user.login,
+          url: user.html_url,
+          avatar: user.avatar_url,
+        }) as GithubUser
+    );
 
   users.push(author);
   return author;
-};
+}
