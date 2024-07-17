@@ -5,7 +5,7 @@
 
   export let data;
 
-  const { post } = data;
+  const { session, post } = data;
 
   let markdown: HTMLElement;
 
@@ -47,7 +47,12 @@
       {@html post.html}
     </section>
     <footer>
-      <a href="{post.href}/raw">Raw</a>
+      <div class="icons">
+        <a href="{post.href}/raw">Raw</a>
+        {#if session?.user?.github.user == post.author.user}
+          <a href="{post.href}/edit">Edit</a>
+        {/if}
+      </div>
       <div class="author">
         <a href={post.author.url}>
           <div class="avatar" style="background-image: url('{post.author.avatar}')"></div>
@@ -104,6 +109,12 @@
       align-items: center;
       justify-content: space-between;
     }
+  }
+
+  .icons {
+    display: flex;
+    
+    gap: 0.75rem;
   }
 
   .author {
