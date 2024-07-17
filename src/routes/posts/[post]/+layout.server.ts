@@ -13,7 +13,7 @@ const footnotes = footnote({ prefixId: ":" });
 export const load: LayoutServerLoad = async ({ params, parent }) => {
   const { session } = await parent();
   const [post]: [Post?] =
-    await db`SELECT * FROM posts WHERE LOWER(title) = LOWER(${params.title.replaceAll("_", " ")})`;
+    await db`SELECT * FROM posts WHERE LOWER(title) = LOWER(${params.post.replaceAll("_", " ")})`;
   if (!post) return error(404, "Post not found!");
 
   const markdown = await fs.readFile(`posts/${post.id}.md`).then((buffer) => buffer.toString());

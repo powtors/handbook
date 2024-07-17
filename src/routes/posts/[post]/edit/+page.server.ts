@@ -6,7 +6,7 @@ import fs from "fs/promises";
 export const load: PageServerLoad = async ({ parent }) => {
   const data = await parent();
 
-  if (data.post.author.github != data.session?.user.github.user) return error(401, "Unauthorized!");
+  if (data.post.author.user != data.session?.user.github.user) return error(401, "Unauthorized!");
 
   return data;
 };
