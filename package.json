@@ -38,6 +38,7 @@
     "marked": "^13.0.2",
     "marked-footnote": "^1.2.2",
     "marked-gfm-heading-id": "^4.0.0",
+    "phosphor-svelte": "^2.0.1",
     "postgres": "^3.4.4"
   }
 }

@@ -1,11 +1,12 @@
 import adapter from "@sveltejs/adapter-auto";
 import { sveltePreprocess as preprocess } from "svelte-preprocess";
+import { phosphorSvelteOptimize as phosphor } from "phosphor-svelte/preprocessor";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
   // Consult https://kit.svelte.dev/docs/integrations#preprocessors
   // for more information about preprocessors
-  preprocess: preprocess(),
+  preprocess: [phosphor(), preprocess()],
 
   kit: {
     // adapter-auto only supports some environments, see https://kit.svelte.dev/docs/adapter-auto for a list.

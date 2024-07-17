@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { IconContext, FileText, PencilSimple as Pencil } from "phosphor-svelte";
+
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
   import { prettyDate } from "$lib";
@@ -47,32 +49,32 @@
       {@html post.html}
     </section>
     <footer>
-      <div class="icons">
-        <a href="{post.href}/raw">Raw</a>
-        {#if session?.user?.github.user == post.author.user}
-          <a href="{post.href}/edit">Edit</a>
-        {/if}
-      </div>
-      <div class="author">
-        <a href={post.author.url}>
-          <div class="avatar" style="background-image: url('{post.author.avatar}')"></div>
-        </a>
-        <div class="info">
-          <a href={post.author.url} class="contrast">
-            <b>{post.author.name}</b>
+      <IconContext values={{ size: "1.75rem" }}>
+        <a href="{post.href}/raw"><FileText /></a>
+        <div class="author">
+          <a href={post.author.url}>
+            <div class="avatar" style="background-image: url('{post.author.avatar}')"></div>
           </a>
-          <br />
-          <small>
-            {#if post.updated_at}
-              <span class="dimmed">
-                {prettyDate(post.updated_at)}
-                &nbsp; &middot; &nbsp;
-              </span>
-            {/if}
-            {prettyDate(post.created_at)}
-          </small>
+          <div class="info">
+            <a href={post.author.url} class="contrast">
+              <b>{post.author.name}</b>
+            </a>
+            <br />
+            <small>
+              {#if post.updated_at}
+                <span class="dimmed">
+                  {prettyDate(post.updated_at)}
+                  &nbsp; &middot; &nbsp;
+                </span>
+              {/if}
+              {prettyDate(post.created_at)}
+            </small>
+          </div>
+          {#if session?.user?.github.user == post.author.user}
+            <a href="{post.href}/edit"><Pencil /></a>
+          {/if}
         </div>
-      </div>
+      </IconContext>
     </footer>
   </article>
 </main>
@@ -111,10 +113,14 @@
     }
   }
 
-  .icons {
-    display: flex;
-    
-    gap: 0.75rem;
+  a {
+    color: inherit;
+
+    transition: filter var(--pico-transition);
+
+    &:hover {
+      filter: brightness(1.375);
+    }
   }
 
   .author {
@@ -133,12 +139,6 @@
       aspect-ratio: 1/1;
 
       border-radius: 30%;
-
-      transition: filter var(--pico-transition);
-
-      &:hover {
-        filter: brightness(1.375);
-      }
     }
 
     .info {

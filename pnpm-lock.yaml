@@ -23,6 +23,9 @@ importers:
       marked-gfm-heading-id:
         specifier: ^4.0.0
         version: 4.0.0(marked@13.0.2)
+      phosphor-svelte:
+        specifier: ^2.0.1
+        version: 2.0.1(svelte@5.0.0-next.175)
       postgres:
         specifier: ^3.4.4
         version: 3.4.4
@@ -1014,6 +1017,11 @@ packages:
   path-type@4.0.0:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
+
+  phosphor-svelte@2.0.1:
+    resolution: {integrity: sha512-2Ryvaf1sfCNOF0zTQVghtxOs/6JKn9MV+e9uluNAT9wAosgNYnaBD210WcFGRrva1sF8cddv7EWSS//ITNN4mg==}
+    peerDependencies:
+      svelte: '>=3'
 
   picocolors@1.0.1:
     resolution: {integrity: sha512-anP1Z8qwhkbmu7MFP5iTt+wQKXgwzf7zTyGlcdzabySa9vd0Xt392U0rVmz9poOaBj0uHJKyyo9/upk0HrEQew==}
@@ -2242,6 +2250,10 @@ snapshots:
   path-key@3.1.1: {}
 
   path-type@4.0.0: {}
+
+  phosphor-svelte@2.0.1(svelte@5.0.0-next.175):
+    dependencies:
+      svelte: 5.0.0-next.175
 
   picocolors@1.0.1: {}
 
