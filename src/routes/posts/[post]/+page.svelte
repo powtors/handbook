@@ -47,23 +47,26 @@
       {@html post.html}
     </section>
     <footer>
-      <a href={post.author.url}>
-        <div class="avatar" style="background-image: url('{post.author.avatar}')"></div>
-      </a>
-      <div class="info">
-        <a href={post.author.url} class="contrast">
-          <b>{post.author.name}</b>
+      <a href="{post.href}/raw">Raw</a>
+      <div class="author">
+        <a href={post.author.url}>
+          <div class="avatar" style="background-image: url('{post.author.avatar}')"></div>
         </a>
-        <br />
-        <small>
-          {#if post.updated_at}
-            <span class="dimmed">
-              {prettyDate(post.updated_at)}
-              &nbsp; &middot; &nbsp;
-            </span>
-          {/if}
-          {prettyDate(post.created_at)}
-        </small>
+        <div class="info">
+          <a href={post.author.url} class="contrast">
+            <b>{post.author.name}</b>
+          </a>
+          <br />
+          <small>
+            {#if post.updated_at}
+              <span class="dimmed">
+                {prettyDate(post.updated_at)}
+                &nbsp; &middot; &nbsp;
+              </span>
+            {/if}
+            {prettyDate(post.created_at)}
+          </small>
+        </div>
       </div>
     </footer>
   </article>
@@ -98,38 +101,44 @@
 
     footer {
       display: flex;
-      flex-direction: row-reverse;
       align-items: center;
+      justify-content: space-between;
+    }
+  }
 
-      gap: 0.5rem;
+  .author {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
 
-      .avatar {
-        height: 2.75rem;
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
+    gap: 0.5rem;
 
-        aspect-ratio: 1/1;
+    .avatar {
+      height: 2.75rem;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
 
-        border-radius: 30%;
+      aspect-ratio: 1/1;
 
-        transition: filter var(--pico-transition);
+      border-radius: 30%;
 
-        &:hover {
-          filter: brightness(1.375);
-        }
+      transition: filter var(--pico-transition);
+
+      &:hover {
+        filter: brightness(1.375);
       }
+    }
 
-      .info {
-        --pico-typography-spacing-vertical: 0;
+    .info {
+      --pico-typography-spacing-vertical: 0;
 
-        text-align: right;
-        line-height: 1.15rem;
-      }
+      text-align: right;
+      line-height: 1.15rem;
+    }
 
-      a {
-        text-decoration: none;
-      }
+    a {
+      text-decoration: none;
     }
   }
 </style>

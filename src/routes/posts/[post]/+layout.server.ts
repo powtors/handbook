@@ -28,6 +28,7 @@ export const load: LayoutServerLoad = async ({ params, parent }) => {
 
   return {
     post: {
+      href: params.post,
       title,
       description,
       markdown,
