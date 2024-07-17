@@ -1,7 +1,9 @@
 <script lang="ts">
-  export let title = "";
-  export let description = "";
-  export let markdown = "";
+  export let title: string;
+  export let markdown: string;
+  export let description: string | undefined;
+
+  if (!description) description = "";
 
   export let max = 256;
 
@@ -23,11 +25,11 @@
       class="description"
       contenteditable
       aria-hidden="true"
-      data-len={`${description.length}/${max}`}
+      data-len={`${description!.length}/${max}`}
       bind:innerText={description}
       on:input={(e) => {
-        e.currentTarget.ariaInvalid = `${description.length > max}`;
-        e.currentTarget.dataset.len = `${description.length}/${max}`;
+        e.currentTarget.ariaInvalid = `${description!.length > max}`;
+        e.currentTarget.dataset.len = `${description!.length}/${max}`;
       }}
     ></div>
   </header>
