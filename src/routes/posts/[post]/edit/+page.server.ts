@@ -16,7 +16,7 @@ export const actions = {
     const session = await locals.auth();
     if (!session) return error(401, "Unauthorized!");
 
-    const originalTitle = params.title!.replaceAll("_", " ");
+    const originalTitle = params.post!.replaceAll("_", " ");
 
     const data = await request.formData();
 
