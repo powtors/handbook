@@ -2,6 +2,10 @@
   $theme-color: "blue"
 );
 
+html {
+  scroll-behavior: smooth;
+}
+
 .markdown {
   --heading-decoration-spacing: 1.5ch;
 
