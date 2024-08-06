@@ -50,7 +50,12 @@
     </section>
     <footer>
       <IconContext values={{ size: "1.75rem" }}>
-        <a href="{post.href}/raw"><FileText /></a>
+        <span>
+          <a href="{post.href}/raw"><FileText /></a>
+          {#if session?.user?.github.user == post.author.user}
+            <a href="{post.href}/edit"><Pencil /></a>
+          {/if}
+        </span>
         <div class="author">
           <a href={post.author.url}>
             <div class="avatar" style="background-image: url('{post.author.avatar}')"></div>
@@ -70,9 +75,6 @@
               {prettyDate(post.created_at)}
             </small>
           </div>
-          {#if session?.user?.github.user == post.author.user}
-            <a href="{post.href}/edit"><Pencil /></a>
-          {/if}
         </div>
       </IconContext>
     </footer>
