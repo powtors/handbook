@@ -3,8 +3,6 @@
   import type { Route } from "$lib";
 
   const routes: Record<string, Route[]> = {};
-
-  const user = $page.data.session?.user;
 </script>
 
 <footer>
@@ -28,12 +26,11 @@
     <hr />
   {/if}
   <div class="bottom">
-    {#if user}
+    {#if $page.data.session?.user}
+      {@const user = $page.data.session?.user}
       <span class="user">Logged in as <a href={user.github.url!}>{user.github.user!}</a></span>
     {/if}
-    <span class="copy"
-      >&copy; 2024 <a href={$page.data.mantainer.url}>{$page.data.mantainer.user}</a> &middot; All rights reserved.</span
-    >
+    <span class="copy">&copy; 2024 <a href={$page.data.mantainer.url}>{$page.data.mantainer.user}</a> &middot; All rights reserved.</span>
   </div>
 </footer>
 
