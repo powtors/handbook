@@ -1,8 +1,7 @@
 <script lang="ts">
   import { Editor } from "$lib/components";
 
-  export let data;
-
+  let { data } = $props();
   const { title, description, markdown } = data.post;
 </script>
 

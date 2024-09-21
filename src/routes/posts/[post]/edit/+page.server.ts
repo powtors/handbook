@@ -1,12 +1,12 @@
 import type { PageServerLoad } from "./$types";
 import { error, redirect, type Actions } from "@sveltejs/kit";
-import db, { type Post, type Author } from "$lib/db";
+import db, { type Post } from "$lib/db";
 import fs from "fs/promises";
 
 export const load: PageServerLoad = async ({ parent }) => {
   const data = await parent();
 
-  if (data.post.author.user != data.session?.user.github.user) return error(401, "Unauthorized!");
+  if (data.post.author.user != data.session?.user.github.user) throw error(401);
 
   return data;
 };
@@ -14,9 +14,7 @@ export const load: PageServerLoad = async ({ parent }) => {
 export const actions = {
   default: async ({ locals, request, params }) => {
     const session = await locals.auth();
-    if (!session) return error(401, "Unauthorized!");
-
-    const originalTitle = params.post!.replaceAll("_", " ");
+    if (!session) throw error(401);
 
     const data = await request.formData();
 
@@ -24,18 +22,21 @@ export const actions = {
     const description = data.get("description")?.toString().slice(0, 256);
     const markdown = data.get("markdown")?.toString();
 
-    if (!title || !markdown) return error(400, "Bad request!");
+    if (!title || !markdown) throw error(400);
 
-    const [author]: [Author?] =
-      await db`SELECT * FROM authors WHERE github = ${session.user.github.user}`;
-    if (!author) return error(401, "Unauthorized!");
+    // TODO: authorization
 
-    const [post]: [Post?] =
-      await db`UPDATE posts SET author = ${author.id}, title = ${title}, description = ${description ?? null} WHERE title = ${originalTitle} RETURNING *`;
-    if (!post) return error(500, "Internal Server Error");
+    const [post]: [Post?] = await db`
+      UPDATE posts SET
+        author = ${session.user.github.id},
+        title = ${title},
+        description = ${description ?? null}
+      WHERE title = ${params.post!}
+      RETURNING *`;
+    if (!post) throw error(500);
 
     await fs.writeFile(`posts/${post.id}.md`, markdown);
 
-    return redirect(301, `/posts/${title.replaceAll(" ", "_").toLowerCase()}`);
+    return redirect(301, `/posts/${encodeURI(title)}`);
   },
 } satisfies Actions;

@@ -1,11 +1,11 @@
 <script lang="ts">
-  import type { Post } from "$lib/db";
-  import type { GithubUser } from "$lib/cache";
   import { prettyDate, type Modify } from "$lib";
+  import type { Post } from "$lib/db";
+  import type { Account } from "$lib/github";
 
-  export let post: Modify<Post, { author: GithubUser }>;
+  export let post: Modify<Post, { author: Account }>;
 
-  const title = post.title.replaceAll(" ", "_").toLowerCase();
+  const title = post.title.toLowerCase();
 </script>
 
 <article>

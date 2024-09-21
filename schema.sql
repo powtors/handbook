@@ -1,16 +1,10 @@
-CREATE TABLE authors (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  github VARCHAR(39) UNIQUE NOT NULL
-);
-
 CREATE TABLE posts (
   id SERIAL PRIMARY KEY,
-  author UUID NOT NULL,
+  author INTEGER NOT NULL,
   title VARCHAR(128) UNIQUE NOT NULL,
   description VARCHAR(256),
   created_at TIMESTAMP NOT NULL DEFAULT now(),
-  updated_at TIMESTAMP,
-  CONSTRAINT fk_author FOREIGN KEY(author) REFERENCES authors(id)
+  updated_at TIMESTAMP
 );
 
 CREATE FUNCTION update_timestamp()

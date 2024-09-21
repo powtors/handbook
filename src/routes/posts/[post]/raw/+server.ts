@@ -3,10 +3,8 @@ import fs from "fs/promises";
 import db, { type Post } from "$lib/db";
 
 export const GET: RequestHandler = async ({ params }) => {
-  const title = params.post!.replaceAll("_", " ");
-
-  const [post]: [Post?] = await db`SELECT * FROM posts WHERE LOWER(title) = LOWER(${title})`;
-  if (!post) return error(404, "Post not found!");
+  const [post]: [Post?] = await db`SELECT * FROM posts WHERE LOWER(title) = LOWER(${params.post!})`;
+  if (!post) throw error(404, "Post not found!");
 
   const markdown = await fs.readFile(`posts/${post.id}.md`).then((buffer) => buffer.toString());
 

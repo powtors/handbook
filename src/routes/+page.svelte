@@ -1,7 +1,8 @@
 <script lang="ts">
   import PostCard from "$lib/components/PostCard.svelte";
 
-  export let data;
+  let { data } = $props();
+  const { posts } = data;
 </script>
 
 <main class="container">
@@ -12,9 +13,11 @@
       </a>
     </header>
     <section>
-      {#each data.posts as post}
-        <PostCard {post} />
-      {/each}
+      <ul>
+        {#each posts as post}
+          <li><PostCard {post} /></li>
+        {/each}
+      </ul>
     </section>
   </article>
 </main>

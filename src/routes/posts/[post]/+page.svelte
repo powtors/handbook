@@ -55,6 +55,7 @@
           {#if session?.user?.github.user == post.author.user}
             <a href="{post.href}/edit"><Pencil /></a>
           {/if}
+          <!-- TODO: delete button -->
         </span>
         <div class="author">
           <a href={post.author.url}>
@@ -112,6 +113,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+
+      /* TODO: more gap */
     }
   }
 

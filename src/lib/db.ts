@@ -8,14 +8,9 @@ export default postgres({
   password: DB_PASS,
 });
 
-export type Author = {
-  id: string;
-  github: string;
-};
-
 export type Post = {
   id: number;
-  author: string;
+  author: number;
   title: string;
   description?: string;
   created_at: Date;
