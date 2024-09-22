@@ -16,6 +16,7 @@ declare module "@auth/sveltekit" {
 
 export const { handle } = SvelteKitAuth({
   providers: [Github],
+  trustHost: true,
   callbacks: {
     jwt({ token, profile, account }) {
       if (!account) return token;

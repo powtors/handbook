@@ -25,6 +25,7 @@ export const actions = {
     const [post]: [Post?] = await db`INSERT INTO posts (author, title, description) VALUES (${session.user.github.id}, ${title}, ${description ?? null}) RETURNING *`;
     if (!post) throw error(500);
 
+    await fs.mkdir("posts", { recursive: true });
     await fs.writeFile(`posts/${post.id}.md`, markdown);
 
     return redirect(301, `/posts/${encodeURI(post.title)}`);
