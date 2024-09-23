@@ -50,11 +50,11 @@
     </section>
     <footer>
       <IconContext values={{ size: "1.75rem" }}>
-        <span>
-          <a href="{post.href}/raw"><FileText /></a>
+        <span class="actions">
+          <a href="{post.href}/raw" title="See raw file"><FileText /></a>
           {#if session?.user?.github.user == post.author.user}
-            <a href="{post.href}/edit"><Pencil /></a>
-            <a href="{post.href}/delete"><Trash /></a>
+            <a href="{post.href}/edit" title="Edit this post"><Pencil /></a>
+            <a href="{post.href}/delete" title="Delete this post"><Trash class="trash"/></a>
           {/if}
         </span>
         <div class="author">
@@ -113,8 +113,19 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+    }
 
-      /* TODO: more gap */
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+
+      :global(.trash) {
+        transition: color 250ms ease-in-out;
+
+        &:hover {
+          color: var(--pico-del-color);
+        }
+      }
     }
   }
 
