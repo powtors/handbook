@@ -10,7 +10,7 @@ const headings = gfmHeadingId({ prefix: "" });
 const footnotes = footnote({ prefixId: ":" });
 
 export const load: LayoutServerLoad = async ({ params, fetch }) => {
-  const [post]: [Post?] = await db`SELECT * FROM posts WHERE LOWER(title) = LOWER(${params.post})`;
+  const [post]: [Post?] = await db`SELECT * FROM posts WHERE LOWER(title) = LOWER(${params.title})`;
   if (!post) throw error(404);
 
   const markdown = await fs.readFile(`posts/${post.id}.md`).then((buffer) => buffer.toString());
@@ -21,11 +21,12 @@ export const load: LayoutServerLoad = async ({ params, fetch }) => {
   // TODO: SANITIZE MARKDOWN OUTPUT!!
   const html = await marked.use(headings).use(footnotes).parse(markdown);
 
-  const { title, description, created_at, updated_at } = post;
+  const { id, title, description, created_at, updated_at } = post;
 
   return {
     post: {
-      href: params.post,
+      id,
+      href: params.title,
       title,
       description,
       markdown,

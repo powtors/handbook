@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { IconContext, FileText, PencilSimple as Pencil } from "phosphor-svelte";
+  import { IconContext, FileText, PencilSimple as Pencil, Trash } from "phosphor-svelte";
 
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
@@ -54,8 +54,8 @@
           <a href="{post.href}/raw"><FileText /></a>
           {#if session?.user?.github.user == post.author.user}
             <a href="{post.href}/edit"><Pencil /></a>
+            <a href="{post.href}/delete"><Trash /></a>
           {/if}
-          <!-- TODO: delete button -->
         </span>
         <div class="author">
           <a href={post.author.url}>

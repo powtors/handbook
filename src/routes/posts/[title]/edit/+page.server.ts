@@ -31,7 +31,7 @@ export const actions = {
         author = ${session.user.github.id},
         title = ${title},
         description = ${description ?? null}
-      WHERE title = ${params.post!}
+      WHERE title = ${params.title!}
       RETURNING *`;
     if (!post) throw error(500);
 
