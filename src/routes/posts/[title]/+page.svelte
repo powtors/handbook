@@ -1,9 +1,11 @@
 <script lang="ts">
   import { IconContext, FileText, PencilSimple as Pencil, Trash } from "phosphor-svelte";
+  import "@catppuccin/highlightjs/css/catppuccin-mocha.css";
 
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
   import { prettyDate } from "$lib";
+  import hljs from "highlight.js";
 
   export let data;
 
@@ -14,16 +16,13 @@
   onMount(async () => {
     // Change footnotes heading id from '<prefix>label' to '<prefix>footnotes'
     const footnotes = markdown.querySelector(".footnotes")!;
-    if (footnotes)
-      footnotes.firstElementChild!.id = footnotes.firstElementChild!.id.replace(
-        /label$/,
-        "footnotes"
-      );
+    if (footnotes) {
+      const child = footnotes.firstElementChild!;
+      child.id = child.id.replace(/label$/, "footnotes");
+    }
 
     // Link Headings
-    const headings = markdown.querySelectorAll<HTMLElement>(
-      "h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]"
-    );
+    const headings = markdown.querySelectorAll<HTMLElement>("h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]");
     for (const heading of headings) {
       const visit = () => goto(`#${heading.id}`, { keepFocus: true });
 
@@ -36,6 +35,17 @@
           visit();
         }
       };
+    }
+
+    // Highlight.js
+    const codeblocks = markdown.querySelectorAll<HTMLElement>("pre code");
+    for (const codeblock of codeblocks) {
+      const language = codeblock.className.split(" ")
+        .find(value => value.search(/^language-\w+$/) != -1);
+
+      if (!language) continue;
+
+      hljs.highlightElement(codeblock);
     }
   });
 </script>
@@ -167,5 +177,9 @@
     a {
       text-decoration: none;
     }
+  }
+
+  :global(code.hljs) {
+    background: none;
   }
 </style>
