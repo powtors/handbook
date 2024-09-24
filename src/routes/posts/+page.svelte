@@ -14,11 +14,11 @@
       <a href="/posts/new"><Plus size="1.45rem"/></a>
     {/if}
   </div>
-  <ul class="posts">
+  <div class="posts">
     {#each posts as post}
-      <li><PostCard {post} /></li>
+      <PostCard {post} />
     {/each}
-  </ul>
+  </div>
 </main>
 
 <style lang="scss">

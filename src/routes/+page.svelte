@@ -13,11 +13,11 @@
       </a>
     </header>
     <section>
-      <ul>
+      <div>
         {#each posts as post}
-          <li><PostCard {post} /></li>
+          <PostCard {post} />
         {/each}
-      </ul>
+      </div>
     </section>
   </article>
 </main>
