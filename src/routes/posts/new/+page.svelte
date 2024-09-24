@@ -4,6 +4,7 @@
 
 <main class="container">
   <form method="post">
+    <!-- TODO: block post with same title as another -->
     <Editor class="editor" />
   </form>
 </main>

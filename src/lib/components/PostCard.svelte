@@ -4,13 +4,11 @@
   import type { Account } from "$lib/github";
 
   export let post: Modify<Post, { author: Account }>;
-
-  const title = post.title.toLowerCase();
 </script>
 
 <article>
   <header>
-    <a href="/posts/{title}"><h1>{post.title}</h1></a>
+    <a href="/posts/{post.title}"><h1>{post.title}</h1></a>
   </header>
   {#if post.description}
     <section>{post.description}</section>
