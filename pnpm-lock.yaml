@@ -11,6 +11,9 @@ importers:
       '@auth/sveltekit':
         specifier: ^1.4.1
         version: 1.4.1(@sveltejs/kit@2.5.18(@sveltejs/vite-plugin-svelte@3.1.1(svelte@5.0.0-next.175)(vite@5.3.3(@types/node@20.14.10)(sass@1.77.6)))(svelte@5.0.0-next.175)(vite@5.3.3(@types/node@20.14.10)(sass@1.77.6)))(svelte@5.0.0-next.175)
+      '@catppuccin/highlightjs':
+        specifier: ^1.0.0
+        version: 1.0.0
       '@picocss/pico':
         specifier: ^2.0.6
         version: 2.0.6
@@ -123,6 +126,9 @@ packages:
         optional: true
       nodemailer:
         optional: true
+
+  '@catppuccin/highlightjs@1.0.0':
+    resolution: {integrity: sha512-Cq0b5pNkzAxTf7QwXkGcMnfEawOdaJP9wQJNsLO1PCqml+NgMe7mOknH3l/j/0Q3bgjijm+N26B8BAYiv18oQg==}
 
   '@esbuild/aix-ppc64@0.21.5':
     resolution: {integrity: sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ==}
@@ -1422,6 +1428,8 @@ snapshots:
       '@sveltejs/kit': 2.5.18(@sveltejs/vite-plugin-svelte@3.1.1(svelte@5.0.0-next.175)(vite@5.3.3(@types/node@20.14.10)(sass@1.77.6)))(svelte@5.0.0-next.175)(vite@5.3.3(@types/node@20.14.10)(sass@1.77.6))
       set-cookie-parser: 2.6.0
       svelte: 5.0.0-next.175
+
+  '@catppuccin/highlightjs@1.0.0': {}
 
   '@esbuild/aix-ppc64@0.21.5':
     optional: true

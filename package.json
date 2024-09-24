@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@auth/sveltekit": "^1.4.1",
+    "@catppuccin/highlightjs": "^1.0.0",
     "@picocss/pico": "^2.0.6",
     "highlight.js": "^11.10.0",
     "marked": "^13.0.2",
