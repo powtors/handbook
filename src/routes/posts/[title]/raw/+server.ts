@@ -8,5 +8,7 @@ export const GET: RequestHandler = async ({ params }) => {
 
   const markdown = await fs.readFile(`posts/${post.id}.md`).then((buffer) => buffer.toString());
 
-  return text(markdown);
+  return text(markdown, {
+    headers: { "Content-Type": "text/html; charset=utf-8" }
+  });
 };
