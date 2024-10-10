@@ -1,10 +1,8 @@
 import type { PageServerLoad } from "./$types"
-import type { Modify } from "$lib";
-import type { Post } from "$lib/db";
-import type { Account } from "$lib/github";
+import type { Post } from "$lib";
 
 export const load: PageServerLoad = async ({ fetch }) => {
-  const posts: Modify<Post, { author: Account }>[] = await fetch("/api/posts?take=5")
+  const posts: Post[] = await fetch("/api/posts")
     .then(async res => await res.json());
 
   return { posts };

@@ -1,9 +1,7 @@
 <script lang="ts">
-  import { prettyDate, type Modify } from "$lib";
-  import type { Post } from "$lib/db";
-  import type { Account } from "$lib/github";
+  import { prettyDate, type Post } from "$lib";
 
-  export let post: Modify<Post, { author: Account }>;
+  export let post: Post;
 </script>
 
 <article>
