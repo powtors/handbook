@@ -1,10 +1,10 @@
+// fluid classless blue
 @use "@picocss/pico/scss/pico" with (
-  $theme-color: "blue"
+  $theme-color: "blue",
+  $enable-viewport: false,
+  $enable-semantic-container: true,
+  $enable-classes: false
 );
-
-html {
-  scroll-behavior: smooth;
-}
 
 .markdown {
   --heading-decoration-spacing: 1.5ch;

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import "$lib/pico.scss";
+  import "$lib/styles.scss";
 
   import { Header, Footer } from "$lib/components";
 </script>
@@ -9,6 +9,10 @@
 <Footer />
 
 <style lang="scss">
+  :global(html) {
+    scroll-behavior: smooth;
+  }
+
   :global(html, body) {
     height: 100%;
   }
@@ -18,7 +22,7 @@
     flex-direction: column;
   }
 
-  :global(body > div > main) {
+  :global(body > main) {
     flex: 1;
   }
 </style>
