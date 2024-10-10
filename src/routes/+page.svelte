@@ -5,27 +5,16 @@
   const { posts } = data;
 </script>
 
-<main class="container">
-  <article class="posts">
-    <header>
-      <a href="/posts">
-        <h1>Posts</h1>
-      </a>
-    </header>
-    <section>
-      {#each posts as post}
-        <PostCard {post} />
-      {/each}
-    </section>
-  </article>
+<main>
+  <section class="posts">
+    {#each posts as post}
+      <PostCard {post} />
+    {/each}
+  </section>
 </main>
 
 <style lang="scss">
-  .posts > header {
-    --pico-typography-spacing-vertical: 0;
-  }
-
-  .posts > section {
+  .posts {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -33,12 +22,8 @@
     gap: 1rem;
 
     :global(> *) {
-      flex: 1 0;
-    }
-
-    &, :global(> *) {
+      flex: 1 0 33%; // 2 posts per row
       margin-bottom: 0;
     }
   }
-
 </style>
