@@ -1,5 +1,6 @@
 <script lang="ts">
   import { prettyDate, type Post } from "$lib";
+  import { User } from "$lib/components";
 
   export let post: Post;
 </script>
@@ -18,10 +19,7 @@
         </span>
       {/if}
     </small>
-    <a href={post.author.url} class="author contrast">
-      <b>{post.author.name}</b>
-      <div class="avatar" style="background-image: url('{post.author.avatar}')"></div>
-    </a>
+    <User account={post.author} named />
   </footer>
 </article>
 
@@ -46,32 +44,6 @@
       gap: 1rem;
 
       margin-top: 0;
-    }
-  }
-
-  .author {
-    display: flex;
-    align-items: center;
-
-    gap: 0.75rem;
-
-    color: inherit;
-    text-decoration: none;
-
-    .avatar {
-      height: 2rem;
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-
-      aspect-ratio: 1/1;
-      border-radius: 30%;
-    }
-
-    transition: filter var(--pico-transition);
-
-    &:hover {
-      filter: brightness(1.375);
     }
   }
 

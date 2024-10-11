@@ -13,8 +13,7 @@ export const GET: RequestHandler = async ({ params }) => {
 
   const user = {
     id: id,
-    user: data.login,
-    name: data.name,
+    name: data.login,
     url: data.html_url,
     avatar: data.avatar_url,
   } as Account;

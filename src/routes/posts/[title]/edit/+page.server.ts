@@ -6,7 +6,7 @@ import fs from "fs/promises";
 export const load: PageServerLoad = async ({ parent }) => {
   const data = await parent();
 
-  if (data.post.author.user != data.session?.user.github.user) throw error(401);
+  if (data.post.author.name != data.session?.user.github.name) throw error(401);
 
   return data;
 };

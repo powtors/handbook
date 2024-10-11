@@ -1,27 +1,17 @@
 <script lang="ts">
   import "$lib/styles.scss";
+  import "$lib/global.scss";
 
-  import { Header } from "$lib/components";
+  import { Header, User } from "$lib/components";
+
+  let { data, children } = $props();
+  const { session } = data;
 </script>
 
-<Header />
-<slot />
-
-<style lang="scss">
-  :global(html) {
-    scroll-behavior: smooth;
-  }
-
-  :global(html, body) {
-    height: 100%;
-  }
-
-  :global(body) {
-    display: flex;
-    flex-direction: column;
-  }
-
-  :global(body > main) {
-    flex: 1;
-  }
-</style>
+<Header>
+  {#if session}
+    {@const account = session.user.github}
+    <User {account} />
+  {/if}
+</Header>
+{@render children()}

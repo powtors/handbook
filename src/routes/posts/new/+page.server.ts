@@ -13,15 +13,16 @@ export const actions = {
     const session = await locals.auth();
     if (!session) throw error(401);
 
-    const data = await request.formData();
+    const author = session.user.github;
 
+    const data = await request.formData();
     const title = data.get("title")?.toString();
     const markdown = data.get("markdown")?.toString();
 
     if (!title || !markdown) throw error(400);
 
     // FIXME: don't let anyone post
-    const [post]: [Post?] = await db`INSERT INTO posts (author, title) VALUES (${session.user.github.id}, ${title}) RETURNING *`;
+    const [post]: [Post?] = await db`INSERT INTO posts (author, title) VALUES (${author.id}, ${title}) RETURNING *`;
     if (!post) throw error(500);
 
     await fs.mkdir("posts", { recursive: true });
