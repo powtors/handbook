@@ -16,13 +16,12 @@ export const actions = {
     const data = await request.formData();
 
     const title = data.get("title")?.toString();
-    const description = data.get("description")?.toString().slice(0, 256);
     const markdown = data.get("markdown")?.toString();
 
     if (!title || !markdown) throw error(400);
 
     // FIXME: don't let anyone post
-    const [post]: [Post?] = await db`INSERT INTO posts (author, title, description) VALUES (${session.user.github.id}, ${title}, ${description ?? null}) RETURNING *`;
+    const [post]: [Post?] = await db`INSERT INTO posts (author, title) VALUES (${session.user.github.id}, ${title}) RETURNING *`;
     if (!post) throw error(500);
 
     await fs.mkdir("posts", { recursive: true });

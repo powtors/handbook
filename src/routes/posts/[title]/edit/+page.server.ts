@@ -19,7 +19,6 @@ export const actions = {
     const data = await request.formData();
 
     const title = data.get("title")?.toString();
-    const description = data.get("description")?.toString().slice(0, 256);
     const markdown = data.get("markdown")?.toString();
 
     if (!title || !markdown) throw error(400);
@@ -30,7 +29,6 @@ export const actions = {
       UPDATE posts SET
         author = ${session.user.github.id},
         title = ${title},
-        description = ${description ?? null}
       WHERE title = ${params.title!}
       RETURNING *`;
     if (!post) throw error(500);

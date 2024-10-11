@@ -8,11 +8,6 @@
   <header>
     <a href="/posts/{post.title}"><h1>{post.title}</h1></a>
   </header>
-  <section>
-    {#if post.description}
-      {post.description}
-    {/if}
-  </section>
   <footer>
     <small class="timestamp">
       {prettyDate(post.created_at)}
@@ -41,14 +36,6 @@
       margin-bottom: 0;
 
       white-space: nowrap;
-    }
-
-    section {
-      flex: 1;
-
-      max-height: 5rem;
-
-      margin-block: var(--pico-block-spacing-vertical);
     }
 
     footer {

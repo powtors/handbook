@@ -2,7 +2,6 @@ CREATE TABLE posts (
   id SERIAL PRIMARY KEY,
   author INTEGER NOT NULL,
   title VARCHAR(128) UNIQUE NOT NULL,
-  description VARCHAR(256),
   created_at TIMESTAMP NOT NULL DEFAULT now(),
   updated_at TIMESTAMP
 );

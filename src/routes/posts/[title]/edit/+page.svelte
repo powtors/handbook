@@ -2,12 +2,12 @@
   import { Editor } from "$lib/components";
 
   let { data } = $props();
-  const { title, description, markdown } = data.post;
+  const { title, markdown } = data.post;
 </script>
 
 <main class="container">
   <form method="post">
-    <Editor class="editor" {title} {description} {markdown} />
+    <Editor class="editor" {title} {markdown} />
   </form>
 </main>
 

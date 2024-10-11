@@ -12,7 +12,6 @@ export type Post = {
   id: number;
   author: number;
   title: string;
-  description?: string;
   created_at: Date;
   updated_at?: Date;
 };

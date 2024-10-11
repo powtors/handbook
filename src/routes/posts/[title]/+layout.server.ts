@@ -21,14 +21,13 @@ export const load: LayoutServerLoad = async ({ params, fetch }) => {
   // TODO: SANITIZE MARKDOWN OUTPUT!!
   const html = await marked.use(headings).use(footnotes).parse(markdown);
 
-  const { id, title, description, created_at, updated_at } = post;
+  const { id, title, created_at, updated_at } = post;
 
   return {
     post: {
       id,
       href: params.title,
       title,
-      description,
       markdown,
       html,
       author,
