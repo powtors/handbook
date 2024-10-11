@@ -1,19 +1,12 @@
 <script lang="ts">
-  import type { Route } from "$lib";
   import { signIn, signOut } from "@auth/sveltekit/client";
 
-  const routes: Route[] = [];
-
   function sign(event: MouseEvent) {
-    if (event.shiftKey) {
-      event.preventDefault();
-      signIn("github");
-    }
+    if (!event.shiftKey && !event.ctrlKey) return;
+    event.preventDefault();
 
-    if (event.ctrlKey) {
-      event.preventDefault();
-      signOut();
-    }
+    if (event.shiftKey) signIn("github");
+    if (event.ctrlKey) signOut();
   }
 </script>
 
@@ -21,15 +14,7 @@
   <a href="/" on:contextmenu={sign}>
     <h1>Handbook</h1>
   </a>
-  <nav>
-    <ul>
-      {#each routes as { label, href }}
-        <li>
-          <a {href} class="contrast">{label}</a>
-        </li>
-      {/each}
-    </ul>
-  </nav>
+  <slot />
 </header>
 
 <style lang="scss">
@@ -44,13 +29,5 @@
 
     border-bottom: 1px solid var(--pico-muted-border-color);
     margin-bottom: var(--pico-block-spacing-vertical);
-  }
-
-  nav {
-    --pico-nav-element-spacing-vertical: 0;
-
-    a {
-      text-decoration: none;
-    }
   }
 </style>

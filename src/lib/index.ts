@@ -4,11 +4,6 @@ import type { Account } from "$lib/github";
 export type Modify<T, R> = Omit<T, keyof R> & R;
 export type Post = Modify<RawPost, { author: Account }>;
 
-export type Route = {
-  label: string;
-  href: string;
-};
-
 const formatter = new Intl.DateTimeFormat(navigator.language, {
   day: "numeric",
   month: "short",
