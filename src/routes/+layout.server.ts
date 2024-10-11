@@ -1,16 +1,17 @@
-import type { Account } from "$lib/github";
+import { MAINTAINER_ID } from "$env/static/private";
 import type { LayoutServerLoad } from "./$types";
-import { PUBLIC_MANTAINER_ID } from "$env/static/public";
+import type { Account } from "$lib/github";
 
-let mantainer: Account | null = null;
+let maintainer: Account | null = null;
 
 export const load: LayoutServerLoad = async ({ locals, fetch }) => {
   const session = await locals.auth();
 
-  if (!mantainer) {
-    const res = await fetch(`/api/accounts/${PUBLIC_MANTAINER_ID}`);
-    mantainer = await res.json();
+  // cache maintainer
+  if (!maintainer) {
+    const res = await fetch(`/api/accounts/${MAINTAINER_ID}`);
+    maintainer = await res.json();
   }
 
-  return { session, mantainer: mantainer! };
+  return { session, maintainer: maintainer! };
 };
