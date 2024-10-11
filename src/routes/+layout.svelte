@@ -1,12 +1,11 @@
 <script lang="ts">
   import "$lib/styles.scss";
 
-  import { Header, Footer } from "$lib/components";
+  import { Header } from "$lib/components";
 </script>
 
 <Header />
 <slot />
-<Footer />
 
 <style lang="scss">
   :global(html) {
