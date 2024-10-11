@@ -61,7 +61,7 @@
     <footer>
       <IconContext values={{ size: "1.75rem" }}>
         <span class="actions">
-          <a href="{post.href}/raw" title="See raw file"><FileText /></a>
+          <a href="/raw/{post.href}" title="See raw file"><FileText /></a>
           {#if session?.user?.github.name == post.author.name}
             <a href="{post.href}/edit" title="Edit this post"><Pencil /></a>
             <a href="{post.href}/delete" title="Delete this post"><Trash class="trash"/></a>
