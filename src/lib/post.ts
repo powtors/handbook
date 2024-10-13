@@ -23,9 +23,9 @@ export async function renderPost(post: Post): Promise<{ markdown: string; html: 
   return { markdown, html };
 }
 
-export async function getPost(title: string, custom?: { fetch?: typeof fetch }): Promise<Post | void> {
+export async function getPost(title: string, custom?: { fetch?: typeof fetch }): Promise<Post> {
   const [dbpost]: [DbPost?] = await db`SELECT * FROM posts WHERE LOWER(title) = LOWER(${title})`;
-  if (!dbpost) return;
+  if (!dbpost) throw new Error("Not found");
 
   const res = await (custom?.fetch ?? fetch)(`/api/accounts/${dbpost.author}`);
   const author: Account = await res.json();
@@ -35,9 +35,9 @@ export async function getPost(title: string, custom?: { fetch?: typeof fetch }):
   return post;
 }
 
-export async function createPost(author: Account, title: string, markdown: string): Promise<Post | void> {
+export async function createPost(author: Account, title: string, markdown: string): Promise<Post> {
   const [post]: [Post?] = await db`INSERT INTO posts (author, title) VALUES (${author.id}, ${title}) RETURNING *`;
-  if (!post) return;
+  if (!post) throw new Error("Failed");
 
   await fs.mkdir("posts", { recursive: true });
   await fs.writeFile(`posts/${post.id}.md`, markdown);
@@ -45,10 +45,10 @@ export async function createPost(author: Account, title: string, markdown: strin
   return post;
 }
 
-export async function updatePost(post: Post, data: { title?: string; markdown?: string }): Promise<Post | void> {
+export async function updatePost(post: Post, data: { title?: string; markdown?: string }): Promise<Post> {
   if (data.title) {
     const [updated]: [Post?] = await db`UPDATE posts SET title = ${data.title} WHERE title = ${post.title} RETURNING *`;
-    if (!updated) return;
+    if (!updated) throw new Error("Failed");
 
     post = updated;
   }
@@ -60,9 +60,9 @@ export async function updatePost(post: Post, data: { title?: string; markdown?: 
   return post;
 }
 
-export async function deletePost(post: Post): Promise<Post | void> {
+export async function deletePost(post: Post): Promise<Post> {
   const [deleted]: [Post?] = await db`DELETE FROM posts WHERE id = ${post.id}`;
-  if (!deleted) return;
+  if (!deleted) throw new Error("Failed");
 
   await fs.rm(`posts/${deleted.id}.md`);
 

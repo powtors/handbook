@@ -4,11 +4,12 @@
 
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
+  import { page } from "$app/stores";
   import { prettyDate } from "$lib";
   import hljs from "highlight.js";
 
   const { data } = $props();
-  const { session, post } = data;
+  let { session, post } = data;
   const user = session?.user.github;
 
   let markdown: HTMLElement;
@@ -61,10 +62,7 @@
     <footer>
       <IconContext values={{ size: "1.75rem" }}>
         <span class="actions">
-          <a href="/raw/{post.href}" title="See raw file"><FileText /></a>
-          {#if post.author.id === user?.id}
-            <a href="/edit/{post.href}" title="Edit this post"><Pencil /></a>
-          {/if}
+          <a href="/raw/{$page.params.title!}" title="See raw file"><FileText /></a>
         </span>
         <div class="author">
           <a href={post.author.url}>
@@ -79,7 +77,7 @@
               {#if post.updated_at}
                 <span class="dimmed">
                   {prettyDate(post.updated_at)}
-                  &nbsp; &middot; &nbsp;
+                  &middot;
                 </span>
               {/if}
               {prettyDate(post.created_at)}

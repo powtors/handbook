@@ -7,6 +7,6 @@ export const GET: RequestHandler = async ({ params, fetch }) => {
 
   const { markdown } = await renderPost(post);
   return text(markdown, {
-    headers: { "Content-Type": "text/html; charset=utf-8" },
+    headers: { "Content-Type": "text/plain; charset=utf-8" },
   });
 };

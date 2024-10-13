@@ -1,5 +1,5 @@
 import type { LayoutServerLoad } from "./$types";
-import { Account } from "$lib";
+import type { Account } from "$lib";
 
 import { MAINTAINER_ID } from "$env/static/private";
 
