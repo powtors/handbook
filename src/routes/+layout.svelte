@@ -11,21 +11,22 @@
 </script>
 
 <Header>
-  <div class="coisos">
-    <a href="/new">
-      <Plus size="1.25rem"/>
-    </a>
+  <div class="user">
     {#if session}
       {@const account = session.user.github}
       <User {account} slim />
+      <a href="/new">
+        <Plus size="1.25rem"/>
+      </a>
     {/if}
   </div>
 </Header>
 {@render children()}
 
 <style lang="scss">
-  .coisos {
+  .user {
     display: flex;
+    flex-direction: row-reverse;
     align-items: center;
 
     gap: 1rem;
