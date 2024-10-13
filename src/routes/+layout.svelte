@@ -12,7 +12,9 @@
 
 <Header>
   <div class="coisos">
-    <a href="/new"><Plus weight="bold" size="1.2rem"/></a>
+    <a href="/new">
+      <Plus size="1.25rem"/>
+    </a>
     {#if session}
       {@const account = session.user.github}
       <User {account} slim />
@@ -27,5 +29,9 @@
     align-items: center;
 
     gap: 1rem;
+  }
+
+  a {
+    color: inherit;
   }
 </style>
