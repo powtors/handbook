@@ -5,4 +5,11 @@ export type Account = {
   avatar: string;
 };
 
-export let accounts: Record<number, Account> = {};
+export function account_from(json: any): Account {
+  return {
+    id: json.id,
+    name: json.login,
+    url: json.html_url,
+    avatar: json.avatar_url,
+  };
+}

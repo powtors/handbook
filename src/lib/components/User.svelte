@@ -3,17 +3,17 @@
 
   interface Props {
     account: Account;
-    named: boolean;
+    slim?: boolean;
   };
 
-  const { account: user, named }: Props = $props();
+  const { account, slim }: Props = $props();
 </script>
 
-<a class="user" href={user.url}>
-  {#if named}
-    <b>{user.name}</b>
+<a class="user" href={account.url}>
+  {#if !slim}
+    <b>{account.name}</b>
   {/if}
-  <div class="avatar" style:background-image="url('{user.avatar}')"></div>
+  <div class="avatar" style:background-image="url('{account.avatar}')"></div>
 </a>
 
 <style lang="scss">

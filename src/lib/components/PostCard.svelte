@@ -1,25 +1,31 @@
 <script lang="ts">
-  import { prettyDate, type Post } from "$lib";
+  import { type Post, prettyDate } from "$lib";
   import { User } from "$lib/components";
 
-  export let post: Post;
+  interface Props {
+    post: Post;
+  };
+
+  const { post }: Props = $props();
 </script>
 
 <article>
   <header>
-    <a href="/posts/{post.title}"><h1>{post.title}</h1></a>
+    <a href="/view/{post.title}">
+      <h1>{post.title}</h1>
+    </a>
   </header>
   <footer>
     <small class="timestamp">
       {prettyDate(post.created_at)}
       {#if post.updated_at}
         <span class="dimmed">
-          &nbsp; &middot; &nbsp;
+          &middot;
           {prettyDate(post.updated_at)}
         </span>
       {/if}
     </small>
-    <User account={post.author} named />
+    <User account={post.author} />
   </footer>
 </article>
 

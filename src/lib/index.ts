@@ -1,8 +1,5 @@
-import type { Post as RawPost } from "$lib/db";
-import type { Account } from "$lib/github";
-
-export type Modify<T, R> = Omit<T, keyof R> & R;
-export type Post = Modify<RawPost, { author: Account }>;
+export type { Post } from "$lib/post";
+export type { Account } from "$lib/github";
 
 const formatter = new Intl.DateTimeFormat(navigator.language, {
   day: "numeric",

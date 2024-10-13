@@ -4,8 +4,7 @@
 
 <main class="container">
   <form method="post">
-    <!-- TODO: block post with same title as another -->
-    <Editor class="editor" />
+    <Editor />
   </form>
 </main>
 
@@ -14,7 +13,7 @@
     display: contents;
   }
 
-  :global(.editor) {
+  :global(article) {
     height: 100%;
   }
 </style>

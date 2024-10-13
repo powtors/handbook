@@ -5,9 +5,9 @@
   const { title, markdown } = data.post;
 </script>
 
-<main class="container">
+<main>
   <form method="post">
-    <Editor class="editor" {title} {markdown} />
+    <Editor {title} {markdown} />
   </form>
 </main>
 
@@ -16,7 +16,7 @@
     display: contents;
   }
 
-  :global(.editor) {
+  :global(article) {
     height: 100%;
   }
 </style>

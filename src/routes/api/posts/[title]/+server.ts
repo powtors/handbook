@@ -1,14 +1,19 @@
 import { json, error, type RequestHandler } from "@sveltejs/kit";
-import db, { type Post } from "$lib/db";
-import type { Account } from "$lib/github";
+import { getPost, renderPost } from "$lib/post";
 
-export const GET: RequestHandler = async ({ params, fetch }) => {
-  const [post]: Post[] = await db`SELECT * FROM posts WHERE LOWER(title) = LOWER(${params.title!})`;
+export const GET: RequestHandler = async ({ params, url, fetch }) => {
+  const post = await getPost(params.title!, { fetch });
+  if (!post) throw error(404, "Post not found");
 
-  if (!post) throw error(404);
+  const raw = url.searchParams.get("raw");
+  const render = url.searchParams.get("render");
+  if (raw || render) {
+    const { markdown, html } = await renderPost(post);
 
-  const res = await fetch(`/api/accounts/${post.author}`);
-  const author: Account = await res.json();
+    if (raw && render) return json({ ...post, markdown, html });
+    if (raw) return json({ ...post, markdown });
+    if (render) return json({ ...post, html });
+  }
 
-  return json({ ...post, author });
+  return json(post);
 };

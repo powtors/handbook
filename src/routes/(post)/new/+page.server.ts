@@ -1,7 +1,6 @@
 import type { PageServerLoad } from "./$types";
 import { error, redirect, type Actions } from "@sveltejs/kit";
-import db, { type Post } from "$lib/db";
-import fs from "fs/promises";
+import { createPost } from "$lib/post";
 
 export const load: PageServerLoad = async ({ parent }) => {
   const { session } = await parent();
@@ -16,18 +15,19 @@ export const actions = {
     const author = session.user.github;
 
     const data = await request.formData();
-    const title = data.get("title")?.toString();
-    const markdown = data.get("markdown")?.toString();
+    const title = data.get("title") as string;
+    const markdown = data.get("markdown") as string;
 
-    if (!title || !markdown) throw error(400);
+    const missing = [
+      !title && "`title`",
+      !markdown && "`markdown`"
+    ].filter(Boolean).join(" & ");
+    if (!title || !markdown) throw error(400, `Missing ${missing}`);
 
     // FIXME: don't let anyone post
-    const [post]: [Post?] = await db`INSERT INTO posts (author, title) VALUES (${author.id}, ${title}) RETURNING *`;
+    const post = await createPost(author, title, markdown);
     if (!post) throw error(500);
 
-    await fs.mkdir("posts", { recursive: true });
-    await fs.writeFile(`posts/${post.id}.md`, markdown);
-
-    return redirect(301, `/posts/${encodeURI(post.title)}`);
+    return redirect(301, `/view/${encodeURI(post.title)}`);
   },
 } satisfies Actions;

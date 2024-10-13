@@ -11,7 +11,7 @@
 <Header>
   {#if session}
     {@const account = session.user.github}
-    <User {account} />
+    <User {account} slim />
   {/if}
 </Header>
 {@render children()}

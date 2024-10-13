@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { IconContext, FileText, PencilSimple as Pencil, Trash } from "phosphor-svelte";
+  import { IconContext, FileText, PencilSimple as Pencil } from "phosphor-svelte";
   import "@catppuccin/highlightjs/css/catppuccin-mocha.css";
 
   import { onMount } from "svelte";
@@ -7,9 +7,9 @@
   import { prettyDate } from "$lib";
   import hljs from "highlight.js";
 
-  export let data;
-
+  const { data } = $props();
   const { session, post } = data;
+  const user = session?.user.github;
 
   let markdown: HTMLElement;
 
@@ -62,9 +62,8 @@
       <IconContext values={{ size: "1.75rem" }}>
         <span class="actions">
           <a href="/raw/{post.href}" title="See raw file"><FileText /></a>
-          {#if session?.user?.github.name == post.author.name}
-            <a href="{post.href}/edit" title="Edit this post"><Pencil /></a>
-            <a href="{post.href}/delete" title="Delete this post"><Trash class="trash"/></a>
+          {#if post.author.id === user?.id}
+            <a href="/edit/{post.href}" title="Edit this post"><Pencil /></a>
           {/if}
         </span>
         <div class="author">
@@ -128,14 +127,6 @@
     .actions {
       display: flex;
       gap: 0.5rem;
-
-      :global(.trash) {
-        transition: color 250ms ease-in-out;
-
-        &:hover {
-          color: var(--pico-del-color);
-        }
-      }
     }
   }
 

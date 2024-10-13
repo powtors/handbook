@@ -14,3 +14,7 @@ body {
 body > main {
   flex: 1;
 }
+
+.dimmed {
+  color: var(--pico-muted-color);
+}
