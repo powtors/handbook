@@ -1,12 +1,14 @@
 <script lang="ts">
+  import type { Snippet } from "svelte";
   import { type Post, prettyDate } from "$lib";
   import { User } from "$lib/components";
 
   interface Props {
     post: Post;
+    header: Snippet<[Post]>;
   };
 
-  const { post }: Props = $props();
+  const { post, header }: Props = $props();
 </script>
 
 <article>
@@ -14,6 +16,7 @@
     <a href="/view/{post.title}">
       <h1>{post.title}</h1>
     </a>
+    {@render header?.(post)}
   </header>
   <footer>
     <small class="timestamp">
@@ -36,6 +39,10 @@
 
     header {
       --pico-typography-spacing-vertical: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
 
       margin-bottom: 0;
 

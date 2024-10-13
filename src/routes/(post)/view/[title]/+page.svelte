@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { IconContext, FileText, PencilSimple as Pencil } from "phosphor-svelte";
+  import { FileText, PencilSimple as Pencil } from "phosphor-svelte";
   import "@catppuccin/highlightjs/css/catppuccin-mocha.css";
 
   import { onMount } from "svelte";
@@ -10,7 +10,6 @@
 
   const { data } = $props();
   let { session, post } = data;
-  const user = session?.user.github;
 
   let markdown: HTMLElement;
 
@@ -55,14 +54,20 @@
   <article>
     <header>
       <h1>{post.title}</h1>
+      {#if session}
+        <a href="/edit/{post.title}">
+          <Pencil size="1.75rem" />
+        </a>
+      {/if}
     </header>
     <section class="markdown" bind:this={markdown}>
       {@html post.html}
     </section>
     <footer>
-      <IconContext values={{ size: "1.75rem" }}>
         <span class="actions">
-          <a href="/raw/{$page.params.title!}" title="See raw file"><FileText /></a>
+          <a href="/raw/{$page.params.title}" title="See raw file">
+            <FileText size="1.75rem" />
+          </a>
         </span>
         <div class="author">
           <a href={post.author.url}>
@@ -84,7 +89,6 @@
             </small>
           </div>
         </div>
-      </IconContext>
     </footer>
   </article>
 </main>
@@ -103,6 +107,14 @@
 
     > * > :global(:last-child) {
       margin-bottom: 0;
+    }
+
+    header {
+      --pico-typography-spacing-vertical: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     header h1 {
