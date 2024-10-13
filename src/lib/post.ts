@@ -12,7 +12,7 @@ const headings = gfmHeadingId({ prefix: "" });
 const footnotes = footnote({ prefixId: ":" });
 
 export async function renderPost(post: Post): Promise<{ markdown: string; html: string; }> {
-  const markdown = await fs.readFile(`posts/${post.id}.md`).then(Buffer.toString);
+  const markdown = await fs.readFile(`posts/${post.id}.md`).then((buffer) => buffer.toString());
 
   // TODO: SANITIZE MARKDOWN OUTPUT!!
   const html = await marked
