@@ -1,37 +1,36 @@
-import { SvelteKitAuth, type DefaultSession } from "@auth/sveltekit";
+import { SvelteKitAuth } from "@auth/sveltekit";
 import Github from "@auth/sveltekit/providers/github";
-import type { Account } from "$lib/github";
+
+export type User = {
+  id: number;
+  name: string;
+};
 
 declare module "@auth/sveltekit" {
   interface Session {
-    user: {
-      github: Account,
-      authorization: string;
-    } & DefaultSession["user"];
+    user: User;
   }
 }
 
 export const { handle } = SvelteKitAuth({
-  providers: [Github],
   trustHost: true,
+  providers: [Github],
   callbacks: {
-    jwt({ token, profile, account }) {
-      if (!account) return token;
-      token.authorization = account.access_token!;
-
+    jwt({ token, profile }) {
+      // User is already logged in
       if (!profile) return token;
-      token.github = {
-        id: profile.id,
-        name: profile.login,
-        url: profile.html_url,
-        avatar: profile.avatar_url,
-      };
+
+      // Save User Info
+      token.user = {
+        id: profile.id as any as number,
+        name: profile.login as string,
+      } as User as any;
 
       return token;
     },
     session({ session, token }) {
-      session.user.github = token.github as Account;
-      session.user.authorization = token.authorization as any;
+      // Retrieve User Info
+      session.user = token.user as User as any;
 
       return session;
     },

@@ -5,16 +5,14 @@ import { getPost, updatePost } from "$lib/post";
 export const load: PageServerLoad = async ({ parent }) => {
   const { session, post } = await parent();
 
-  if (!post) throw error(404, "Post not found");
-  if (!session) throw error(401, "Logged out");
+  if (!session) throw error(401, "Logged Out");
+  if (!post) throw error(404, "Post Not Found");
 
-  const user = session.user.github;
-
-  if (post.author.name != user.name) throw error(401, "Unauthorized");
+  if (post.author.id !== session.user.id) throw error(401, "Unauthorized");
 };
 
 export const actions = {
-  async default({ locals, request, params, fetch }) {
+  async default({ locals, request, params }) {
     const session = await locals.auth();
     if (!session) throw error(401, "Unauthorized");
 
@@ -24,14 +22,14 @@ export const actions = {
 
     if (!title && !markdown) throw error(400, "Missing `title` & `markdown`");
 
-    // TODO: authorization
-    
-    const oldPost = await getPost(params.title!, { fetch });
-    if (!oldPost) throw error(404, "Post not found");
+    let post = await getPost(params.title!);
+    if (!post) throw error(404, "Post Not Found");
 
-    const newPost = await updatePost(oldPost, { title, markdown });
-    if (!newPost) throw error(500, "Update post error")
+    if (post.author.id !== session.user.id) throw error(401, "Unauthorized");
 
-    return redirect(301, `/view/${encodeURI(newPost.title)}`);
+    post = await updatePost(post, { title, content: markdown });
+    if (!post) throw error(500, "Update Post Error")
+
+    return redirect(301, `/view/${encodeURI(post.title)}`);
   },
 } satisfies Actions;

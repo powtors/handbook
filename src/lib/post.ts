@@ -1,8 +1,9 @@
 import fs from "fs/promises";
 import db, { type Post as DbPost } from "$lib/db";
-import type { Account } from "$lib/github";
+import type { User } from "$lib";
 
-export type Post = Omit<DbPost, "author"> & { author: Account };
+export type Post = Omit<DbPost, "author"> & { author: User };
+export type RenderedPost = Post & { markdown: string; html: string; };
 
 import { marked } from "marked";
 import { gfmHeadingId } from "marked-gfm-heading-id";
@@ -11,41 +12,40 @@ import footnote from "marked-footnote";
 const headings = gfmHeadingId({ prefix: "" });
 const footnotes = footnote({ prefixId: ":" });
 
-export async function renderPost(post: Post): Promise<{ markdown: string; html: string; }> {
+const renderer = marked
+  .use(headings)
+  .use(footnotes);
+
+export async function renderPost(post: Post): Promise<RenderedPost> {
   const markdown = await fs.readFile(`posts/${post.id}.md`).then((buffer) => buffer.toString());
 
   // TODO: SANITIZE MARKDOWN OUTPUT!!
-  const html = await marked
-    .use(headings)
-    .use(footnotes)
-    .parse(markdown);
+  const html = await renderer.parse(markdown);
 
-  return { markdown, html };
+  return Object.assign(post, { markdown, html });
 }
 
-export async function getPost(title: string, custom?: { fetch?: typeof fetch }): Promise<Post> {
-  const [dbpost]: [DbPost?] = await db`SELECT * FROM posts WHERE LOWER(title) = LOWER(${title})`;
-  if (!dbpost) throw new Error("Not found");
+export async function getPost(title: string): Promise<Post> {
+  const [post]: [DbPost?] = await db`SELECT * FROM posts WHERE LOWER(title) = LOWER(${title})`;
+  if (!post) throw new Error("Not found");
 
-  const res = await (custom?.fetch ?? fetch)(`/api/accounts/${dbpost.author}`);
-  const author: Account = await res.json();
+  const res = await fetch(`/api/accounts/${post.author}`);
+  const author: User = await res.json();
 
-  const post = { ...dbpost, author } as Post;
-
-  return post;
+  return { ...post, author };
 }
 
-export async function createPost(author: Account, title: string, markdown: string): Promise<Post> {
-  const [post]: [Post?] = await db`INSERT INTO posts (author, title) VALUES (${author.id}, ${title}) RETURNING *`;
+export async function createPost(author: User, data: { title: string, content: string }): Promise<Post> {
+  const [post]: [Post?] = await db`INSERT INTO posts (author, title) VALUES (${author.id}, ${data.title}) RETURNING *`;
   if (!post) throw new Error("Failed");
 
   await fs.mkdir("posts", { recursive: true });
-  await fs.writeFile(`posts/${post.id}.md`, markdown);
+  await fs.writeFile(`posts/${post.id}.md`, data.content);
 
   return post;
 }
 
-export async function updatePost(post: Post, data: { title?: string; markdown?: string }): Promise<Post> {
+export async function updatePost(post: Post, data: { title?: string; content?: string }): Promise<Post> {
   if (data.title) {
     const [updated]: [Post?] = await db`UPDATE posts SET title = ${data.title} WHERE title = ${post.title} RETURNING *`;
     if (!updated) throw new Error("Failed");
@@ -53,18 +53,18 @@ export async function updatePost(post: Post, data: { title?: string; markdown?: 
     post = updated;
   }
 
-  if (data.markdown) {
-    await fs.writeFile(`posts/${post.id}.md`, data.markdown);
+  if (data.content) {
+    await fs.writeFile(`posts/${post.id}.md`, data.content);
   }
 
   return post;
 }
 
 export async function deletePost(post: Post): Promise<Post> {
-  const [deleted]: [Post?] = await db`DELETE FROM posts WHERE id = ${post.id}`;
+  const [deleted]: [DbPost?] = await db`DELETE FROM posts WHERE id = ${post.id}`;
   if (!deleted) throw new Error("Failed");
 
-  await fs.rm(`posts/${deleted.id}.md`);
+  await fs.rename(`posts/${deleted.id}.md`, `posts/trash.${deleted.id}.md`);
 
-  return deleted;
+  return post;
 }

@@ -28,7 +28,7 @@
         </span>
       {/if}
     </small>
-    <User account={post.author} />
+    <User user={post.author} />
   </footer>
 </article>
 

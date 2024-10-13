@@ -1,19 +1,19 @@
 <script lang="ts">
-  import type { Account } from "$lib/github";
+  import type { User } from "$lib";
 
   interface Props {
-    account: Account;
+    user: User;
     slim?: boolean;
   };
 
-  const { account, slim }: Props = $props();
+  const { user, slim }: Props = $props();
 </script>
 
-<a class="user" href={account.url}>
+<a class="user" href="https://github.com/{user.name}">
   {#if !slim}
-    <b>{account.name}</b>
+    <b>{user.name}</b>
   {/if}
-  <div class="avatar" style:background-image="url('{account.avatar}')"></div>
+  <div class="avatar" style:background-image="url('https://github.com/{user.name}.png')"></div>
 </a>
 
 <style lang="scss">

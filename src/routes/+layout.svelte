@@ -4,6 +4,7 @@
 
   import { Plus } from "phosphor-svelte";
 
+
   import { Header, User } from "$lib/components";
 
   let { data, children } = $props();
@@ -13,8 +14,7 @@
 <Header>
   <div class="user">
     {#if session}
-      {@const account = session.user.github}
-      <User {account} slim />
+      <User user={session.user} slim />
       <a href="/new">
         <Plus size="1.25rem"/>
       </a>

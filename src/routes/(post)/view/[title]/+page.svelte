@@ -1,6 +1,8 @@
 <script lang="ts">
-  import { FileText, PencilSimple as Pencil } from "phosphor-svelte";
   import "@catppuccin/highlightjs/css/catppuccin-mocha.css";
+
+  import { FileText, PencilSimple as Pencil } from "phosphor-svelte";
+
 
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
@@ -55,7 +57,7 @@
     <header>
       <h1>{post.title}</h1>
       {#if session}
-        <a href="/edit/{post.title}">
+        <a href="/edit/{$page.params.title}">
           <Pencil size="1.75rem" />
         </a>
       {/if}
@@ -70,11 +72,11 @@
           </a>
         </span>
         <div class="author">
-          <a href={post.author.url}>
-            <div class="avatar" style="background-image: url('{post.author.avatar}')"></div>
+          <a href="https://github.com/{post.author.name}">
+            <div class="avatar" style:background-image="url('https://github.com/{post.author.name}.png')"></div>
           </a>
           <div class="info">
-            <a href={post.author.url} class="contrast">
+            <a href="https://github.com/{post.author.name}" class="contrast">
               <b>{post.author.name}</b>
             </a>
             <br />

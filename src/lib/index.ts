@@ -1,5 +1,5 @@
 export type { Post } from "$lib/post";
-export type { Account } from "$lib/github";
+export type { User } from "$lib/auth";
 
 const formatter = new Intl.DateTimeFormat(navigator.language, {
   day: "numeric",

@@ -1,16 +1,19 @@
+import { MAINTAINER_TOKEN } from "$env/static/private";
+
 import type { LayoutServerLoad } from "./$types";
-import type { Account } from "$lib";
+import type { User } from "$lib";
 
-import { MAINTAINER_ID } from "$env/static/private";
-
-let maintainer: Account;
+let maintainer: User;
 
 export const load: LayoutServerLoad = async ({ locals, fetch }) => {
   const session = await locals.auth();
 
   if (!maintainer) {
-    const res = await fetch(`/api/accounts/${MAINTAINER_ID}`);
-    maintainer = await res.json();
+    const res = await fetch("https://api.github.com/user", {
+      headers: { authorization: `token ${MAINTAINER_TOKEN}` },
+    });
+
+    maintainer = await res.json().then(({ id, login: name }) => ({ id, name }));
   }
 
   return { session, maintainer };

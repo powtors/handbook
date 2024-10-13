@@ -1,6 +1,6 @@
 import { json, type RequestHandler } from "@sveltejs/kit";
 import db, { type Post as DbPost } from "$lib/db";
-import type { Post, Account } from "$lib";
+import type { Post, User } from "$lib";
 
 export const GET: RequestHandler = async ({ url, fetch }) => {
   const take = url.searchParams.get("take");
@@ -15,7 +15,7 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
   const output = await Promise.all(
     posts.map(async (post) => {
       const res = await fetch(`/api/accounts/${post.author}`);
-      const author: Account = await res.json();
+      const author: User = await res.json();
 
       return { ...post, author } as Post;
     })
