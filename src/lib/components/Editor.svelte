@@ -1,32 +1,62 @@
 <script lang="ts">
+  import { onMount } from "svelte";
+  import { DragNDrop } from "$lib/components";
+
   interface Props {
     title?: string;
     markdown?: string;
+
+    dnd?: boolean;
   };
 
-  let { title, markdown, ...props }: Props = $props();
+  let { title, markdown, dnd }: Props = $props();
 
-  let valid = $derived(!!title && !!markdown);
+  let form: HTMLFormElement;
+
+  let file: boolean | undefined = $state(false);
+  let valid = $derived(!!title && (!!markdown || file));
+
+  onMount(() => {
+    if (dnd) form.enctype = "multipart/form-data";
+  })
 </script>
 
-<article {...props}>
-  <header>
-    <!-- TODO: block post with same title as another -->
-    <input type="text" name="title" required bind:value={title}
-      oninput={(e) => (e.currentTarget.ariaInvalid = `${!title}`)}
-      placeholder="Title"
-    />
-  </header>
-  <section>
-    <!-- TODO: make this a drop-down file dialog -->
-    <textarea name="markdown" required bind:value={markdown}></textarea>
-  </section>
-  <footer>
-    <button type="submit" disabled={!valid}>Finish</button>
-  </footer>
-</article>
+<form method="post" bind:this={form}>
+  <article>
+    <header>
+      <!-- TODO: block post with same title as another -->
+      <input name="title" required
+        type="text" bind:value={title}
+        oninput={(e) => (e.currentTarget.ariaInvalid = `${!title}`)}
+        placeholder="Title"
+      />
+    </header>
+    <section>
+      {#if dnd}
+        <DragNDrop name="file" required
+          accept="text/markdown"
+          validate={(filename) => {
+            if (!filename.endsWith(".md"))
+              return "Must be a markdown file";
+          }}
+          bind:valid={file} />
+      {:else}
+        <textarea name="markdown" required
+          bind:value={markdown}>
+        </textarea>
+      {/if}
+    </section>
+    <footer>
+      <button type="submit" disabled={!valid}>Finish</button>
+    </footer>
+  </article>
+</form>
 
 <style lang="scss">
+  form {
+    display: contents;
+  }
+
   article {
     --pico-spacing: 0;
 
@@ -37,8 +67,11 @@
   section {
     display: contents;
 
-    textarea {
+    :global(> :first-child) {
       height: 100%;
+    }
+
+    textarea {
       resize: none;
     }
   }

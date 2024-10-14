@@ -14,10 +14,13 @@ export const actions = {
 
     const data = await request.formData();
     const title = data.get("title") as string;
-    const markdown = data.get("markdown") as string;
+    const file = data.get("file") as File;
+    let markdown = data.get("markdown") as string;
 
-    const missing = [!title && "`title`", !markdown && "`markdown`"].filter(Boolean).join(" & ");
-    if (!title || !markdown) throw error(400, `Missing ${missing}`);
+    if (!title) throw error(400, "Missing `title`");
+    if (!file && !markdown) throw error(400, "Missing `markdown`");
+
+    if (file) markdown = await file.text();
 
     // FIXME: don't let anyone post
     const post = await createPost(session.user, { title, content: markdown });

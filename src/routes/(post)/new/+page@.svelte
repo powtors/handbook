@@ -2,17 +2,11 @@
   import { Editor } from "$lib/components";
 </script>
 
-<main class="container">
-  <form method="post">
-    <Editor />
-  </form>
+<main>
+  <Editor dnd />
 </main>
 
 <style lang="scss">
-  form {
-    display: contents;
-  }
-
   :global(article) {
     height: 100%;
   }

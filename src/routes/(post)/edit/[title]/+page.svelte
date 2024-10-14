@@ -6,16 +6,10 @@
 </script>
 
 <main>
-  <form method="post">
-    <Editor {title} {markdown} />
-  </form>
+  <Editor {title} {markdown} />
 </main>
 
 <style lang="scss">
-  form {
-    display: contents;
-  }
-
   :global(article) {
     height: 100%;
   }

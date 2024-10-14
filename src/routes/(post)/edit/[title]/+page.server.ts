@@ -8,7 +8,8 @@ export const load: PageServerLoad = async ({ parent }) => {
   if (!session) throw error(401, "Logged Out");
   if (!post) throw error(404, "Post Not Found");
 
-  if (post.author.id !== session.user.id) throw error(401, "Unauthorized");
+  if (post.author.id !== session.user.id)
+    throw error(401, "Unauthorized");
 };
 
 export const actions = {
@@ -18,14 +19,19 @@ export const actions = {
 
     const data = await request.formData();
     const title = data.get("title") as string;
-    const markdown = data.get("markdown") as string;
+    const file = data.get("file") as File;
+    let markdown = data.get("markdown") as string;
 
-    if (!title && !markdown) throw error(400, "Missing `title` & `markdown`");
+    if (!title) throw error(400, "Missing `title`");
+    if (!file && !markdown) throw error(400, "Missing `markdown`");
 
     let post = await getPost.bind({ fetch })(params.title!);
     if (!post) throw error(404, "Post Not Found");
 
-    if (post.author.id !== session.user.id) throw error(401, "Unauthorized");
+    if (post.author.id !== session.user.id)
+      throw error(401, "Unauthorized");
+
+    if (file) markdown = await file.text();
 
     post = await updatePost(post, { title, content: markdown });
     if (!post) throw error(500, "Update Post Error")
