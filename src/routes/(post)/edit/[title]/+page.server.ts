@@ -12,7 +12,7 @@ export const load: PageServerLoad = async ({ parent }) => {
 };
 
 export const actions = {
-  async default({ locals, request, params }) {
+  async default({ locals, request, params, fetch }) {
     const session = await locals.auth();
     if (!session) throw error(401, "Unauthorized");
 
@@ -22,7 +22,7 @@ export const actions = {
 
     if (!title && !markdown) throw error(400, "Missing `title` & `markdown`");
 
-    let post = await getPost(params.title!);
+    let post = await getPost.bind({ fetch })(params.title!);
     if (!post) throw error(404, "Post Not Found");
 
     if (post.author.id !== session.user.id) throw error(401, "Unauthorized");

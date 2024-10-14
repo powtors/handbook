@@ -25,11 +25,12 @@ export async function renderPost(post: Post): Promise<RenderedPost> {
   return Object.assign(post, { markdown, html });
 }
 
-export async function getPost(title: string): Promise<Post> {
+// Bind svelte's custom `fetch` using `.bind({ fetch })` to use this function
+export async function getPost(this: { fetch: typeof fetch }, title: string): Promise<Post> {
   const [post]: [DbPost?] = await db`SELECT * FROM posts WHERE LOWER(title) = LOWER(${title})`;
   if (!post) throw new Error("Not found");
 
-  const res = await fetch(`/api/accounts/${post.author}`);
+  const res = await this.fetch(`/api/accounts/${post.author}`);
   const author: User = await res.json();
 
   return { ...post, author };
