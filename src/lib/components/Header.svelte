@@ -27,6 +27,5 @@
     justify-content: space-between;
 
     border-bottom: 1px solid var(--pico-muted-border-color);
-    margin-bottom: var(--pico-block-spacing-vertical);
   }
 </style>
