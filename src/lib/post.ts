@@ -17,7 +17,8 @@ const renderer = marked
   .use(footnotes);
 
 export async function renderPost(post: Post): Promise<RenderedPost> {
-  const markdown = await fs.readFile(`posts/${post.id}.md`).then((buffer) => buffer.toString());
+  const markdown = await fs.readFile(`posts/${post.id}.md`)
+    .then((buffer) => buffer.toString());
 
   // TODO: SANITIZE MARKDOWN OUTPUT!!
   const html = await renderer.parse(markdown);
@@ -37,21 +38,22 @@ export async function getPost(this: { fetch: typeof fetch }, title: string): Pro
 }
 
 export async function createPost(author: User, data: { title: string, content: string }): Promise<Post> {
-  const [post]: [Post?] = await db`INSERT INTO posts (author, title) VALUES (${author.id}, ${data.title}) RETURNING *`;
+  const [post]: [DbPost?] = await db`INSERT INTO posts (author, title) VALUES (${author.id}, ${data.title}) RETURNING *`;
   if (!post) throw new Error("Failed");
 
   await fs.mkdir("posts", { recursive: true });
   await fs.writeFile(`posts/${post.id}.md`, data.content);
 
-  return post;
+  return { ...post, author };
 }
 
 export async function updatePost(post: Post, data: { title?: string; content?: string }): Promise<Post> {
   if (data.title) {
-    const [updated]: [Post?] = await db`UPDATE posts SET title = ${data.title} WHERE title = ${post.title} RETURNING *`;
+    const [updated]: [DbPost?] = await db`UPDATE posts SET title = ${data.title} WHERE title = ${post.title} RETURNING *`;
     if (!updated) throw new Error("Failed");
 
-    post = updated;
+    const { author } = post;
+    post = { ...updated, author };
   }
 
   if (data.content) {
@@ -62,10 +64,10 @@ export async function updatePost(post: Post, data: { title?: string; content?: s
 }
 
 export async function deletePost(post: Post): Promise<Post> {
-  const [deleted]: [DbPost?] = await db`DELETE FROM posts WHERE id = ${post.id}`;
+  const [deleted]: [DbPost?] = await db`DELETE FROM posts WHERE id = ${post.id} RETURNING *`;
   if (!deleted) throw new Error("Failed");
 
-  await fs.rename(`posts/${deleted.id}.md`, `posts/trash.${deleted.id}.md`);
+  await fs.rename(`posts/${deleted.id}.md`, `posts/${deleted.id}.trash.md`);
 
   return post;
 }
