@@ -1,13 +1,12 @@
 <script lang="ts">
   import "@catppuccin/highlightjs/css/catppuccin-mocha.css";
 
-  import { FileText, PencilSimple as Pencil } from "phosphor-svelte";
-
+  import { FileText, PencilSimple as Pencil, TrashSimple as Trash } from "phosphor-svelte";
 
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
-  import { prettyDate } from "$lib";
+  import { Timestamp, User, IconList } from "$lib/components";
   import hljs from "highlight.js";
 
   const { data } = $props();
@@ -52,137 +51,73 @@
   });
 </script>
 
-<main class="container">
+<main>
   <article>
     <header>
       <h1>{post.title}</h1>
-      {#if session}
-        <a href="/edit/{$page.params.title}">
-          <Pencil size="1.75rem" />
-        </a>
+      {#if post.author.id === session?.user.id}
+        <IconList>
+          <a href="/edit/{$page.params.title}"><Pencil /></a>
+          <a href="/delete/{$page.params.title}"><Trash /></a>
+        </IconList>
       {/if}
     </header>
     <section class="markdown" bind:this={markdown}>
       {@html post.html}
     </section>
     <footer>
-        <span class="actions">
-          <a href="/raw/{$page.params.title}" title="See raw file">
-            <FileText size="1.75rem" />
-          </a>
-        </span>
-        <div class="author">
-          <a href="https://github.com/{post.author.name}">
-            <div class="avatar" style:background-image="url('https://github.com/{post.author.name}.png')"></div>
-          </a>
-          <div class="info">
-            <a href="https://github.com/{post.author.name}" class="contrast">
-              <b>{post.author.name}</b>
-            </a>
-            <br />
-            <small>
-              {#if post.updated_at}
-                <span class="dimmed">
-                  {prettyDate(post.updated_at)}
-                  &middot;
-                </span>
-              {/if}
-              {prettyDate(post.created_at)}
-            </small>
-          </div>
-        </div>
+      <IconList>
+        <a href="/raw/{$page.params.title}"><FileText /></a>
+      </IconList>
+      <span class="info">
+        <Timestamp {post} />
+        <User user={post.author} />
+      </span>
     </footer>
   </article>
 </main>
 
 <style lang="scss">
-  main {
+  article {
     display: flex;
     flex-direction: column;
+
+    height: 100%;
   }
 
-  article {
+  header {
+    --pico-typography-spacing-vertical: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h1 {
+      font-size: calc(var(--pico-font-size) * 1.25);
+    }
+  }
+
+  section {
     flex: 1;
 
-    display: flex;
-    flex-direction: column;
+    padding: var(--pico-spacing);
 
-    > * > :global(:last-child) {
+    &, > :global(:last-child) {
       margin-bottom: 0;
-    }
-
-    header {
-      --pico-typography-spacing-vertical: 0;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    header h1 {
-      font-size: calc(var(--pico-font-size) * 1.375);
-    }
-
-    section {
-      flex: 1;
-
-      padding: var(--pico-spacing);
-      margin-bottom: 0;
-    }
-
-    footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .actions {
-      display: flex;
-      gap: 0.5rem;
     }
   }
 
-  a {
-    color: inherit;
-
-    transition: filter var(--pico-transition);
-
-    &:hover {
-      filter: brightness(1.375);
-    }
-  }
-
-  .author {
+  footer, .info {
     display: flex;
-    flex-direction: row-reverse;
     align-items: center;
+    justify-content: space-between;
 
-    gap: 0.5rem;
-
-    .avatar {
-      height: 2.75rem;
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-
-      aspect-ratio: 1/1;
-
-      border-radius: 30%;
-    }
-
-    .info {
-      --pico-typography-spacing-vertical: 0;
-
-      text-align: right;
-      line-height: 1.15rem;
-    }
-
-    a {
-      text-decoration: none;
-    }
+    gap: 1rem;
   }
 
-  :global(code.hljs) {
-    background: none;
+  .info {
+    flex: 1;
+
+    align-items: baseline;
   }
 </style>

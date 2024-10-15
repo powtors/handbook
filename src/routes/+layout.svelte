@@ -2,8 +2,7 @@
   import "$lib/styles.scss";
   import "$lib/global.scss";
 
-  import { Plus } from "phosphor-svelte";
-
+  import { IconContext, Plus } from "phosphor-svelte";
 
   import { Header, User } from "$lib/components";
 
@@ -11,17 +10,19 @@
   const { session } = data;
 </script>
 
-<Header>
-  <div class="user">
-    {#if session}
-      <User user={session.user} slim />
-      <a href="/new">
-        <Plus size="1.25rem"/>
-      </a>
-    {/if}
-  </div>
-</Header>
-{@render children()}
+<IconContext values={{ size: "1.5rem" }}>
+  <Header>
+    <div class="user">
+      {#if session}
+        <User user={session.user} slim />
+        <a href="/new">
+          <Plus />
+        </a>
+      {/if}
+    </div>
+  </Header>
+  {@render children()}
+</IconContext>
 
 <style lang="scss">
   .user {

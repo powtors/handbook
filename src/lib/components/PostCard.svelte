@@ -1,14 +1,16 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
   import { type Post, prettyDate } from "$lib";
-  import { User } from "$lib/components";
+  import { Timestamp, User } from "$lib/components";
 
   interface Props {
     post: Post;
-    header: Snippet<[Post]>;
+
+    header?: Snippet<[Post]>;
+    footer?: Snippet<[Post]>;
   };
 
-  const { post, header }: Props = $props();
+  const { post, header, footer }: Props = $props();
 </script>
 
 <article>
@@ -19,48 +21,42 @@
     {@render header?.(post)}
   </header>
   <footer>
-    <small class="timestamp">
-      {prettyDate(post.created_at)}
-      {#if post.updated_at}
-        <span class="dimmed">
-          &middot;
-          {prettyDate(post.updated_at)}
-        </span>
-      {/if}
-    </small>
-    <User user={post.author} />
+    {@render footer?.(post)}
+    <span class="info">
+      <Timestamp {post} simple />
+      <User user={post.author} />
+    </span>
   </footer>
 </article>
 
 <style lang="scss">
-  article {
+  header {
+    --pico-typography-spacing-vertical: 0;
+
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
 
-    header {
-      --pico-typography-spacing-vertical: 0;
+    margin-bottom: 0;
 
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      margin-bottom: 0;
-
-      white-space: nowrap;
-    }
-
-    footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      gap: 1rem;
-
-      margin-top: 0;
-    }
+    white-space: nowrap;
   }
 
-  .timestamp {
-    text-wrap: nowrap;
+  footer, .info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 1rem;
+  }
+
+  footer {
+    margin-top: 0;
+  }
+
+  .info {
+    flex: 1;
+
+    align-items: baseline;
   }
 </style>
