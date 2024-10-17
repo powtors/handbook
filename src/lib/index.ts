@@ -1,5 +1,6 @@
 export type { Post } from "$lib/post";
 export type { User } from "$lib/auth";
+export { default as Cache } from "$lib/cache";
 
 const formatter = new Intl.DateTimeFormat(navigator.language, {
   day: "numeric",
