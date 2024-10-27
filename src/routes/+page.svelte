@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Timestamp, User } from "$lib/components";
+  import { User } from "$lib/components";
 
   let { data } = $props();
   const { posts } = data;
@@ -11,10 +11,7 @@
       <a href="/view/{post.title}">
         <h2>{post.title}</h2>
       </a>
-      <span>
-        <Timestamp {post} simple />
-        <User user={post.author} />
-      </span>
+      <User user={post.author} slim />
     </section>
   {/each}
 </main>
@@ -25,20 +22,13 @@
 
     display: flex;
     justify-content: space-between;
-    
-    gap: 2rem;
+
+    gap: 0.75rem;
 
     a, h2 {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-    }
-
-    span {
-      display: flex;
-      align-items: baseline;
-
-      gap: 1rem;
     }
 
     &:not(:last-child) {
