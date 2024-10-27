@@ -1,29 +1,48 @@
 <script lang="ts">
-  import { PostCard } from "$lib/components";
+  import { Timestamp, User } from "$lib/components";
 
   let { data } = $props();
   const { posts } = data;
 </script>
 
 <main>
-  <section>
-    {#each posts as post}
-      <PostCard {post} />
-    {/each}
-  </section>
+  {#each posts as post}
+    <section>
+      <a href="/view/{post.title}">
+        <h2>{post.title}</h2>
+      </a>
+      <span>
+        <Timestamp {post} simple />
+        <User user={post.author} />
+      </span>
+    </section>
+  {/each}
 </main>
 
 <style lang="scss">
   section {
+    --pico-typography-spacing-vertical: 0;
+
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-between;
+    
+    gap: 2rem;
 
-    gap: 1rem;
+    a, h2 {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
-    :global(> *) {
-      flex: 1 0 33%; // 2 posts per row
-      margin-bottom: 0;
+    span {
+      display: flex;
+      align-items: baseline;
+
+      gap: 1rem;
+    }
+
+    &:not(:last-child) {
+      margin-bottom: var(--pico-block-spacing-vertical);
     }
   }
 </style>

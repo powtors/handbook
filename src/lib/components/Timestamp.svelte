@@ -11,7 +11,6 @@
   const { post, simple, reverse }: Props = $props();
 </script>
 
-
 <small style:flex-direction={reverse ? "row" : "row-reverse"}>
   {#if !simple}
     {#if post.updated_at}
@@ -19,7 +18,7 @@
       <span>&middot;</span>
     {/if}
   {/if}
-  <b>{prettyDate(post.created_at)}</b>
+  {prettyDate(post.created_at)}
 </small>
 
 <style lang="scss">
