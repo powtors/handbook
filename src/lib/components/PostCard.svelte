@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
-  import { type Post, prettyDate } from "$lib";
+  import { type Post } from "$lib";
   import { Timestamp, User } from "$lib/components";
 
   interface Props {
@@ -10,7 +10,7 @@
     footer?: Snippet<[Post]>;
   };
 
-  const { post, header, footer }: Props = $props();
+  const { post }: Props = $props();
 </script>
 
 <article>
@@ -18,10 +18,8 @@
     <a href="/view/{post.title}">
       <h1>{post.title}</h1>
     </a>
-    {@render header?.(post)}
   </header>
   <footer>
-    {@render footer?.(post)}
     <span class="info">
       <Timestamp {post} simple />
       <User user={post.author} />

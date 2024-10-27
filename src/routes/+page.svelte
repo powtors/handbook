@@ -1,26 +1,14 @@
 <script lang="ts">
-  import { PencilSimple as Pencil, TrashSimple as Trash } from "phosphor-svelte";
-
-  import { PostCard, IconList } from "$lib/components";
-  import type { Post } from "$lib";
+  import { PostCard } from "$lib/components";
 
   let { data } = $props();
-  const { session, posts } = data;
+  const { posts } = data;
 </script>
-
-{#snippet header(post: Post)}
-  {#if post.author.id === session?.user.id}
-    <IconList>
-      <a href="/edit/{post.title}"><Pencil /></a>
-      <a href="/delete/{post.title}"><Trash /></a>
-    </IconList>
-  {/if}
-{/snippet}
 
 <main>
   <section>
     {#each posts as post}
-      <PostCard {post} {header} />
+      <PostCard {post} />
     {/each}
   </section>
 </main>
