@@ -17,7 +17,10 @@
 <style lang="scss">
   span {
     display: flex;
-    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: end;
+
+    gap: 0.625rem 0.75rem;
   }
 
   span :global(a) {
