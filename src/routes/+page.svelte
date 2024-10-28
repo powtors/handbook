@@ -17,6 +17,10 @@
 </main>
 
 <style lang="scss">
+  main {
+    --pico-block-spacing-horizontal: 1.625rem;
+  }
+
   section {
     --pico-typography-spacing-vertical: 0;
 
