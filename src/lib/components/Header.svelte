@@ -26,6 +26,8 @@
     align-items: center;
     justify-content: space-between;
 
+    gap: 2rem;
+
     border-bottom: 1px solid var(--pico-muted-border-color);
   }
 </style>
