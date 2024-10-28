@@ -10,9 +10,7 @@
 </script>
 
 <a class="user" href="https://github.com/{user.name}">
-  {#if !slim}
-    <b>{user.name}</b>
-  {/if}
+  <b style:display={slim ? "none" : "unset"}>{user.name}</b>
   <div class="avatar" style:background-image="url('https://github.com/{user.name}.png')"></div>
 </a>
 
