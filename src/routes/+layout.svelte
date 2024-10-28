@@ -5,6 +5,7 @@
   import { IconContext, Plus } from "phosphor-svelte";
 
   import { Header, User } from "$lib/components";
+  import IconList from "$lib/components/IconList.svelte";
 
   let { data, children } = $props();
   const { session } = data;
@@ -12,14 +13,14 @@
 
 <IconContext values={{ size: "1.5rem" }}>
   <Header>
-    <div class="user">
+    <span class="user" dir="rtl">
       {#if session}
         <User user={session.user} slim />
-        <a href="/new">
-          <Plus />
-        </a>
+        <IconList>
+          <a href="/new"><Plus /></a>
+        </IconList>
       {/if}
-    </div>
+    </span>
   </Header>
   {@render children()}
 </IconContext>
@@ -27,7 +28,6 @@
 <style lang="scss">
   .user {
     display: flex;
-    flex-direction: row-reverse;
     align-items: center;
 
     gap: 1rem;
