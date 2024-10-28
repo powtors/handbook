@@ -10,7 +10,7 @@
   import hljs from "highlight.js";
 
   const { data } = $props();
-  let { session, post } = data;
+  let { post } = data;
 
   let markdown: HTMLElement;
 
@@ -55,21 +55,19 @@
   <article>
     <header>
       <h1>{post.title}</h1>
-      {#if post.author.id === session?.user.id}
-        <IconList>
-          <a href="/edit/{$page.params.title}"><Pencil /></a>
-          <a href="/delete/{$page.params.title}"><Trash /></a>
-        </IconList>
-      {/if}
     </header>
     <section class="markdown" bind:this={markdown}>
       {@html post.html}
     </section>
     <footer>
-      <IconList>
-        <a href="/raw/{$page.params.title}"><FileText /></a>
-      </IconList>
-      <span class="info">
+      <span>
+        <IconList>
+          <a href="/raw/{$page.params.title}"><FileText /></a>
+          <a href="/edit/{$page.params.title}"><Pencil /></a>
+          <a href="/delete/{$page.params.title}"><Trash /></a>
+        </IconList>
+      </span>
+      <span>
         <Timestamp {post} />
         <User user={post.author} />
       </span>
@@ -107,17 +105,23 @@
     }
   }
 
-  footer, .info {
+  footer {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
 
-    gap: 1rem;
+    gap: 0.75rem 1rem;
+
+    > :last-child {
+      margin-left: auto;
+    }
   }
 
-  .info {
-    flex: 1;
-
+  span {
+    display: flex;
     align-items: baseline;
+
+    gap: 1rem;
   }
 </style>
