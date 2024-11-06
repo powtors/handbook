@@ -34,8 +34,8 @@ const renderings = new Cache<number, { markdown: string; html: string }>(5 * 60 
 
 // Bind svelte's custom `fetch` using `.bind({ fetch })` to use this function
 export async function getPost(this: { fetch: typeof fetch }, title: string): Promise<Post> {
-  if (posts.has(title.toLowerCase()))
-    return posts.get(title.toLowerCase())!;
+  if (posts.has(title))
+    return posts.get(title)!;
 
   const [post]: [DbPost?] = await db`SELECT * FROM posts WHERE LOWER(title) = LOWER(${title})`;
   if (!post) throw new Error("Not found");
@@ -43,7 +43,7 @@ export async function getPost(this: { fetch: typeof fetch }, title: string): Pro
   const res = await this.fetch(`/api/accounts/${post.author}`);
   const author: User = await res.json();
 
-  return posts.set(post.title.toLowerCase(), { ...post, author });
+  return posts.set(post.title, { ...post, author });
 }
 
 export async function createPost(author: User, data: { title: string, content: string }): Promise<Post> {
@@ -53,7 +53,7 @@ export async function createPost(author: User, data: { title: string, content: s
   await fs.mkdir("posts", { recursive: true });
   await fs.writeFile(`posts/${post.id}.md`, data.content);
 
-  return posts.set(post.title.toLowerCase(), { ...post, author });
+  return posts.set(post.title, { ...post, author });
 }
 
 export async function updatePost(post: Post, data: { title?: string; content?: string }): Promise<Post> {
@@ -62,8 +62,8 @@ export async function updatePost(post: Post, data: { title?: string; content?: s
     if (!updated) throw new Error("Failed");
 
     const { author } = post;
-    posts.invalidate(post.title.toLowerCase())
-    post = posts.set(updated.title.toLowerCase(), { ...updated, author });
+    posts.invalidate(post.title)
+    post = posts.set(updated.title, { ...updated, author });
   }
 
   if (data.content) {
@@ -80,7 +80,7 @@ export async function deletePost(post: Post): Promise<Post> {
 
   await fs.rename(`posts/${deleted.id}.md`, `posts/${deleted.id}.trash.md`);
 
-  posts.invalidate(deleted.title.toLowerCase());
+  posts.invalidate(deleted.title);
   renderings.invalidate(post.id);
   return post;
 }

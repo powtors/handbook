@@ -11,12 +11,18 @@ export default class Cache<K extends string | number | symbol, V> {
   }
 
   public get(key: K): V | undefined {
-    const limit = this.timestamps[key] + this.lifetime * 1000;
-    
-    const valid = Date.now() < limit;
-    if (valid) return this.cached[key];
+    if (typeof key === "string") {
+      key = key.toLowerCase() as K;
+    }
 
-    this.invalidate(key);
+    const value = this.cached[key];
+    if (!value) return;
+
+    const limit = this.timestamps[key] + this.lifetime * 1000;
+    const valid = Date.now() < limit;
+
+    if (!valid) this.invalidate(key);
+    else return this.cached[key];
   }
 
   public has(key: K): boolean {
