@@ -68,7 +68,7 @@
         </IconList>
       </span>
       <span>
-        <Timestamp {post} />
+        <Timestamp {post} reverse />
         <User user={post.author} />
       </span>
     </footer>
