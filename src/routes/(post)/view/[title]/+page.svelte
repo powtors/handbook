@@ -10,7 +10,7 @@
   import hljs from "highlight.js";
 
   const { data } = $props();
-  let { post } = data;
+  let { post, session } = data;
 
   let markdown: HTMLElement;
 
@@ -63,8 +63,10 @@
       <span>
         <IconList>
           <a href="/raw/{$page.params.title}"><FileText /></a>
-          <a href="/edit/{$page.params.title}"><Pencil /></a>
-          <a href="/delete/{$page.params.title}"><Trash /></a>
+          {#if session?.user.id === post.author.id}
+            <a href="/edit/{$page.params.title}"><Pencil /></a>
+            <a href="/delete/{$page.params.title}"><Trash /></a>
+          {/if}
         </IconList>
       </span>
       <span>
