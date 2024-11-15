@@ -1,14 +1,12 @@
 node_modules/
 
 # Runtime
-/database/
-/posts/
+database/
+posts/
 
 # Output
-.output
-.vercel
-/.svelte-kit
-/build
+.svelte-kit/
+build/
 
 # OS
 .DS_Store

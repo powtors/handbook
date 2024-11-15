@@ -1,4 +1,4 @@
-import adapter from "@sveltejs/adapter-auto";
+import adapter from "@sveltejs/adapter-node";
 import { sveltePreprocess as preprocess } from "svelte-preprocess";
 import { phosphorSvelteOptimize as phosphor } from "phosphor-svelte/preprocessor";
 
