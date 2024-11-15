@@ -1,13 +1,17 @@
 import { json, type RequestHandler } from "@sveltejs/kit";
 import { Cache, type User } from "$lib";
 
+import { MAINTAINER_TOKEN } from "$env/static/private";
+
 const users = new Cache<number, User>(3 * 60 * 60);
 
 async function getUser(id: number): Promise<User> {
   if (users.has(id))
     return users.get(id)!;
 
-  const res = await fetch(`https://api.github.com/user/${id}`);
+  const res = await fetch(`https://api.github.com/user/${id}`, {
+    headers: { authorization: `Bearer ${MAINTAINER_TOKEN}` }
+  });
   if (res.status != 200) throw new Error("User Not Found");
 
   const { login: name } = await res.json();

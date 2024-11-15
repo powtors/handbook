@@ -7,10 +7,10 @@ This is a blog built with svelte
 Install dependencies with your least hated package manager:
 
 ```bash
-npm install
+pnpm i
 ```
 
-Setup your [.env] file as [example](.env.example)
+Setup your `.env` or `.env.prod` file as [example](.env.example)
 
 > [!INFO]
 > `AUTH_SECRET` may be generated with `openssl rand -hex 32`
@@ -20,40 +20,36 @@ Setup your [.env] file as [example](.env.example)
 Testing the project is simple as follows:
 
 ```bash
-# this will start our database
 docker compose up
-
-# this will start our server
-npm run dev
+pnpm dev
 ```
 
 > [!NOTE]
-> You may need to specify the alternative env file to docker compose if you're using `.env.local` or `.env.prod`
+> You may need to specify the alternative env file to docker compose if you're using`.env.prod`
 >
-> In this case any invocations of compose must be followed by `--env-file` as example: `docker compose --env-file .env.local ...`
+> In this case any invocations of compose must be followed by `--env-file` as example: `docker compose --env-file .env.prod ...`
+
+## Testing
+
+To test our server:
+
+```bash
+docker compose up -d
+sudo pnpm dev
+```
 
 ## Running
 
-To run our server as production:
+Create a production build:
 
 ```bash
-# Using .env
-docker compose up -d
-sudo pnpm dev --host --port 80
+pnpm build
+```
 
-# Using .env.prod
+Start database:
+
+```bash
 docker compose --env-file .env.prod up -d
-sudo pnpm dev --host --port 80 --mode prod
 ```
 
-## Building
-
-To create a production version of the project:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `sudo npm run preview --host --port 80 --mode prod`.
-
-> To deploy the app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+Run it with `sudo node --env-file .env.prod build`.

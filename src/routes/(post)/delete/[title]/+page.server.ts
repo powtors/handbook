@@ -6,8 +6,7 @@ export const load: PageServerLoad = async ({ parent }) => {
   const { session, post } = await parent();
   if (!session) throw error(401, "Unauthorized");
 
-  if (post.author.id !== session.user.id)
-    throw error(401, "Unauthorized");
+  if (session.user.id !== post.author.id) throw error(401, "Unauthorized");
 
   const deleted = await deletePost(post);
   if (!deleted) throw error(500, "Post Deletion Failed");

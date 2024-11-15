@@ -1,16 +1,21 @@
 import type { PageServerLoad } from "./$types";
 import { error, redirect, type Actions } from "@sveltejs/kit";
 import { createPost } from "$lib/post";
+import maintainer from "$lib/maintainer";
 
 export const load: PageServerLoad = async ({ parent }) => {
   const { session } = await parent();
   if (!session) throw error(401, "Unauthorized");
+
+  if (session.user.id !== maintainer.id) throw error(401, "Unauthorized");
 };
 
 export const actions = {
   default: async ({ locals, request }) => {
     const session = await locals.auth();
     if (!session) throw error(401, "Unauthorized");
+
+    if (session.user.id !== maintainer.id) throw error(401, "Unauthorized");
 
     const data = await request.formData();
     const title = data.get("title") as string;
@@ -22,7 +27,6 @@ export const actions = {
 
     if (file) markdown = await file.text();
 
-    // FIXME: don't let anyone post
     const post = await createPost(session.user, { title, content: markdown });
     if (!post) throw error(500, "Failed");
 

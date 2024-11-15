@@ -28,8 +28,7 @@ export const actions = {
     let post = await getPost.bind({ fetch })(params.title!);
     if (!post) throw error(404, "Post Not Found");
 
-    if (post.author.id !== session.user.id)
-      throw error(401, "Unauthorized");
+    if (post.author.id !== session.user.id) throw error(401, "Unauthorized");
 
     if (file) markdown = await file.text();
 
