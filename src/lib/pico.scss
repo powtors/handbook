@@ -1,0 +1,7 @@
+// fluid classless blue
+@use "@picocss/pico/scss/pico" with (
+  $theme-color: "blue",
+  $enable-viewport: false,
+  $enable-semantic-container: true,
+  $enable-classes: false
+);

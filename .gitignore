@@ -1,9 +1,5 @@
 node_modules/
 
-# Runtime
-database/
-posts/
-
 # Output
 .svelte-kit/
 build/

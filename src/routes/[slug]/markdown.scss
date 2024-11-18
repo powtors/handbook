@@ -1,0 +1,45 @@
+.markdown {
+  /* Checkboxes had an annoying spacing before these */
+  .contains-task-list {
+    padding: calc(var(--pico-block-spacing-horizontal) * 0.5);
+  }
+
+  .task-list-item {
+    list-style: none;
+  }
+
+  /* Ghost # before heading text */
+  --heading-decoration-spacing: 1.5ch;
+
+  margin-left: var(--heading-decoration-spacing);
+
+  .headlink {
+    position: relative;
+
+    a {
+      color: inherit;
+
+      &:hover::before,
+      &:focus::before {
+        content: "#";
+        position: absolute;
+
+        left: calc(var(--heading-decoration-spacing) * -1);
+        top: 0.5em;
+
+        font-size: 0.75em;
+        line-height: 0.75em;
+        text-decoration: none;
+
+        color: var(--pico-muted-color);
+
+        filter: brightness(1.2);
+      }
+    }
+  }
+
+  /* Table cells alignment fix */
+  td, th {
+    text-align: revert-layer;
+  }
+}

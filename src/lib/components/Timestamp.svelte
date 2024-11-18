@@ -1,36 +1,15 @@
 <script lang="ts">
-  import { prettyDate, type Post } from "$lib";
-
   interface Props {
-    post: Post;
+    date: any;
+  };
 
-    simple?: boolean;
-    reverse?: boolean;
-  }
+  const { date }: Props = $props();
 
-  const { post, simple, reverse }: Props = $props();
+  const pretty = (date: any) => new Intl.DateTimeFormat(navigator.language, {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  }).format(new Date(date));
 </script>
 
-<small style:flex-direction={reverse ? "row" : "row-reverse"}>
-  {#if !simple}
-    {#if post.updated_at}
-      <span>{prettyDate(post.updated_at)}</span>
-      <span>&middot;</span>
-    {/if}
-  {/if}
-  {prettyDate(post.created_at)}
-</small>
-
-<style lang="scss">
-  small {
-    display: flex;
-
-    gap: 0.375rem;
-
-    text-wrap: nowrap;
-  }
-
-  span {
-    color: var(--pico-muted-color);
-  }
-</style>
+<small>{pretty(date)}</small>

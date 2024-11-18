@@ -1,17 +1,16 @@
 <script lang="ts">
-  import { User } from "$lib/components";
-
-  let { data } = $props();
-  const { posts } = data;
+  const { data } = $props();
 </script>
 
 <main>
-  {#each posts as post}
+  {#each data.posts as post}
     <section>
-      <a href="/view/{post.title}">
+      <a href={post.href}>
         <h2>{post.title}</h2>
       </a>
-      <User user={post.author} slim />
+      <a href="https://github.com/potors">
+        <img src="https://github.com/potors.png" alt="author" />
+      </a>
     </section>
   {/each}
 </main>
@@ -35,8 +34,21 @@
       white-space: nowrap;
     }
 
-    &:not(:last-child) {
-      margin-bottom: var(--pico-block-spacing-vertical);
+    &:last-child {
+      --pico-block-spacing-vertical: 0;
+    }
+  }
+
+  img {
+    width: 2rem;
+    height: 2rem;
+
+    border-radius: 30%;
+
+    transition: var(--pico-transition);
+
+    &:hover {
+      filter: brightness(1.375);
     }
   }
 </style>

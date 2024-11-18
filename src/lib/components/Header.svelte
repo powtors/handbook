@@ -1,17 +1,5 @@
-<script lang="ts">
-  import { signIn, signOut } from "@auth/sveltekit/client";
-
-  function sign(event: MouseEvent) {
-    if (!event.shiftKey && !event.ctrlKey) return;
-    event.preventDefault();
-
-    if (event.shiftKey) signIn("github");
-    if (event.ctrlKey) signOut();
-  }
-</script>
-
 <header>
-  <a href="/" on:contextmenu={sign}>
+  <a href="/">
     <h1>Handbook</h1>
   </a>
   <slot />
