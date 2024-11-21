@@ -1,0 +1,117 @@
+---
+title: Programação Procedural
+date: 2024-11-19
+---
+
+As vezes chamada de *imperativa* ou *estruturada*, a programação procedural
+consiste em executar instruções em sequencia linear, ou seja, em ordem.
+
+## Procedimentos
+
+Tomemos como exemplo a [linguagem C](https://pt.wikipedia.org/wiki/C_(linguagem_de_programação)), meramente por sua simplicidade.
+Assim sendo, imagine que precisamos criar uma aplicação na qual devemos realizar uma série de etapas:
+
+1. Ligar o carro
+2. Buzinar o carro
+3. Desligar o carro
+
+## Solução
+
+Podemos ver que o nosso programa controla o *estado* um carro. Escreveriamos o programa assim:
+
+```c
+int main(void) {
+  carro_ligar();
+  carro_buzinar();
+  carro_desligar();
+
+  return 0;
+}
+```
+
+Para entendermos o que esta acontecendo nesse programa, vamos quebrá-lo por partes...
+
+## Programa
+
+```c
+int main(void) {
+  return 0;
+}
+```
+
+Este trecho representa a execução de nosso programa, no momento que o usuário o abre
+ele é executado. Nesse caso fazendo absolutamente nada.
+
+> `return 0;` é necessário pois cada programa retorna um código de status, interpretado pelo sistema operacional.
+> No qual o valor `0` representa sucesso, e qualquer valor diferente dele, falha.
+
+Não precisamos saber o que as funções `carro_ligar`, `carro_buzinar` e `carro_desligar` fazem.
+Apenas que elas são executadas em ordem sequencial, de cima a baixo.
+
+No entanto, se em algum momento precisarmos gerenciar vários carros esse método se tornará um problema.
+Teríamos que ter, por exemplo, `carro1_ligar`, `carro2_ligar`, `carro3_ligar` e assim por diante.
+Imagine o problema no momento em que teríamos que definir 70 mil funções, uma para cada carro.
+
+Para resolver isso, vamos utilizar uma *estrutura*, um "molde", genérico, que nosso computador entende.
+
+## Structs
+
+```c
+struct Carro {};
+```
+
+`struct` é o termo que a linguagem entende que estamos definindo a então estrutura,
+`Carro` é o nome que nós demos a ela
+e as chaves contemplam suas informações --- para fins didáticos, nenhuma.
+
+## Funções
+
+Deste jeito, podemos criar três funções nos moldes das anteriores:
+
+```c
+void carro_ligar(Carro carro);
+void carro_buzinar(Carro carro);
+void carro_desligar(Carro carro);
+```
+
+Agora, a diferença é que podemos chamar estas funções e injetar os valores do carro, e não o contrário.
+Podemos ter vários carros, e utilizar a exata mesma função.
+
+> [!NOTE]
+> `void` diz à linguagem que a função não retorna valor algum.
+
+## Programa Final
+
+```c
+struct Carro {};
+
+int main(void) {
+  struct Carro carro1 = {};
+  struct Carro carro2 = {};
+  struct Carro carro3 = {};
+
+  carro_ligar(carro1);
+  carro_ligar(carro2);
+  carro_ligar(carro3);
+
+  carro_buzinar(carro1);
+  carro_buzinar(carro2);
+  carro_buzinar(carro3);
+
+  carro_desligar(carro1);
+  carro_desligar(carro2);
+  carro_desligar(carro3);
+
+  return 0;
+}
+```
+
+## Conclusão
+
+Com isso, aprendemos como um programa é estruturado na linguagem C,
+declarações de `struct`s, variáveis, funções e passagem de parâmetros.
+
+Veja outros artigos sobre linguagens de programação:
+
+- [Orientada a Objeto](/oop)
+- [Funcional](/functional)
