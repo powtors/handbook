@@ -21,7 +21,7 @@
       <Markdown />
     </section>
     <footer>
-      <a href="/raw/{$page.params.slug}">
+      <a href="/{$page.params.slug}/raw">
         <FileText size="1.5rem" />
       </a>
       <b><Timestamp {date} /></b>
