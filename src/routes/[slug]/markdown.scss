@@ -47,4 +47,8 @@
   blockquote :last-child {
     margin-bottom: 0;
   }
+
+  :not(pre) > code {
+    color: var(--pico-contrast);
+  }
 }
