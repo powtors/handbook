@@ -39,30 +39,37 @@ int main(void) {
 }
 ```
 
-Este trecho representa a execução de nosso programa, no momento que o usuário o abre
-ele é executado. Nesse caso fazendo absolutamente nada.
+Este trecho representa a primeira coisa a ser executada em nosso programa.
+Nesse caso fazendo absolutamente nada.
 
 > `return 0;` é necessário pois cada programa retorna um código de status, interpretado pelo sistema operacional.
 > No qual o valor `0` representa sucesso, e qualquer valor diferente dele, falha.
 
 Não precisamos saber o que as funções `carro_ligar`, `carro_buzinar` e `carro_desligar` fazem.
 Apenas que elas são executadas em ordem sequencial, de cima a baixo.
+E, é claro, `liga`, `buzina` e `desliga` *um* carro, respectivamente.
 
 No entanto, se em algum momento precisarmos gerenciar vários carros esse método se tornará um problema.
 Teríamos que ter, por exemplo, `carro1_ligar`, `carro2_ligar`, `carro3_ligar` e assim por diante.
-Imagine o problema no momento em que teríamos que definir 70 mil funções, uma para cada carro.
+Imagine o problema no momento em que teríamos que definir 70 mil funções, uma para cada carro... que nem sabemos quais são...
 
 Para resolver isso, vamos utilizar uma *estrutura*, um "molde", genérico, que nosso computador entende.
+
+> Computadores não ligam para o que estão manipulando, para eles **tudo são números**.
 
 ## Structs
 
 ```c
-struct Carro {};
+struct Carro {
+  int chassi;
+};
 ```
 
 `struct` é o termo que a linguagem entende que estamos definindo a então estrutura,
 `Carro` é o nome que nós demos a ela
-e as chaves contemplam suas informações --- para fins didáticos, nenhuma.
+e as chaves contemplam suas informações (número do chassi).
+
+> Para fins de simplificação, o número do chassi será, de fato, um número, e não uma sequencia alfanúmerica de caracteres.
 
 ## Funções
 
@@ -77,18 +84,25 @@ void carro_desligar(Carro carro);
 Agora, a diferença é que podemos chamar estas funções e injetar os valores do carro, e não o contrário.
 Podemos ter vários carros, e utilizar a exata mesma função.
 
-> [!NOTE]
+> #### Observações:
+>
 > `void` diz à linguagem que a função não retorna valor algum.
-
-## Programa Final
+>
+> Isto também economiza memória, já que teriamos que criar N funções para N carros, agora temos 1 função para N carros.
 
 ```c
-struct Carro {};
+struct Carro {
+  int chassi;
+};
+
+void carro_ligar(Carro carro);
+void carro_buzinar(Carro carro);
+void carro_desligar(Carro carro);
 
 int main(void) {
-  struct Carro carro1 = {};
-  struct Carro carro2 = {};
-  struct Carro carro3 = {};
+  struct Carro carro1 = { 123 };
+  struct Carro carro2 = { 456 };
+  struct Carro carro3 = { 789 };
 
   carro_ligar(carro1);
   carro_ligar(carro2);
@@ -106,10 +120,147 @@ int main(void) {
 }
 ```
 
+Este programa liga 3 carros, buzina e desliga-os.
+Mas ainda temos um problema a resolver. Este código é ineficiente.
+
+## Concessionária
+
+Agora somos uma concessionária de carros, e precisamos conduzir testes nas ECUs de cada carro.
+Para isso usaremos a aplicação exemplificada acima, com algumas modificações.
+
+Agora temos que: para cada carro, ligar e desligar os motores.
+
+Nosso código de teste é apenas um intermediador da ECU para o painel de controle do carro.
+Ou seja, não temos controle do que acontece dentro do carro (simulando as funções não definidas acima).
+No entanto, ao ligar o carro a ECU nos retorna se o carro foi ou não ligado. (O carro sempre desligará)
+
+Modificaremos nosso `Carro` para:
+
+```c
+struct Carro {
+  int chassi;
+  bool ligado;
+}
+```
+
+E nossas funções para:
+
+```c
+bool carro_ligar(Carro carro);
+bool carro_desligar(Carro carro);
+```
+
+## Listas
+
+Agora, para testar todos os carros, iremos percorrer uma *lista* chamada `carros`:
+
+```c
+for (int i = 0; i < TOTAL_DE_CARROS; i++) {
+  Carro carro = carros[i];
+
+  carro_ligar(carro);
+
+  if (carro.ligado) carro_desligar(carro);
+  else log_err("Carro %d não ligou!", i);
+}
+```
+
+> `log_err` faz exatamente o que o nome diz: arquiva um erro.
+
+E por enquanto tudo bem, nossos testes estão prontos.
+Mas ainda estamos sendo ineficientes.
+
+## Memória
+
+Para isso, podemos visualizar o que está acontecendo nas imagens abaixo.
+
+![bytes](/procedural/8-bytes.svg)
+
+Nesta imagem, temos uma lista de 8 elementos e seus respectivos endereços na memória.
+Cada elemento tem 4 bytes de tamanho. Contudo, cada `Carro` ocupa 8 bytes de espaço (5 utilizados, 3 de espaçamento), como é possível ver na imagem abaixo:
+
+![carros](/procedural/4-carros.svg)
+
+> #### Para ler no futuro...
+>
+> Artigo em inglês sobre alinhamento de memória: [structure packing](https://catb.org/esr/structure-packing)
+
+Esta lista então, pode conter apenas 4 `Carro`s.
+Mas é quando chamamos as funções que requerem um `Carro` como parâmetro que vem o problema.
+
+## Copia x Referência
+
+Quando chamamos `carro_ligar()`, estamos fazendo uma **cópia** do carro, e enviando para a função.
+Veja bem, os computadores não são nada além de máquinas gerenciando [pilhas](https://www.ime.usp.br/~pf/algoritmos/aulas/pilha.html).
+Pilha é um conceito bem conhecido no mundo da computação. Em poucas palavras, o último que entra é o primeiro que sai.
+
+![copia-antes](/procedural/stack-copy-before-carro_ligar.svg)
+
+As funções são chamadas assim. Cada argumento é jogado em uma pilha, e então a função precisa manipulá-la a seu favor.
+
+Ao copiarmos o `Carro` para a função, o que acontece é que esse carro, na prática, ocupará o dobro de memória.
+
+![copia-depois](/procedural/stack-copy-after-carro_ligar.svg)
+
+## Ponteiros
+
+Para fugir desse problema utilizaremos [*ponteiros*](https://www.ime.usp.br/~pf/algoritmos/aulas/pont.html).
+
+O que vamos fazer é ao invés de copiarmos todo o `Carro` para dentro da função, copiar apenas onde ele se localiza.
+
+![referencia](/procedural/stack-ref-carro_ligar.svg)
+
+Nosso carro fica na posição `0x00`, então diremos à função: "ligue o carro que está em 0x00", ao invés de "ligue este carro aqui".
+
+> Óbviamente em nosso programa atual a redução de carga atual é ínfima.
+> Porém, no mundo real, trabalharíamos com estruturas inúmeras vezes maiores que essa.
+
+Para aplicar estas mudanças, precisaremos alterar o código:
+
+```c
+bool carro_ligar(Carro* carro);
+```
+
+Agora, ao chamar a função, utilizaremos a localização do carro, não ele mesmo:
+
+```c
+for (int i = 0; i < TOTAL_DE_CARROS; i++) {
+  Carro* carro = &carros[i];
+
+  // ...
+}
+```
+
+# Programa Final
+
+```c
+struct Carro {
+  int chassi;
+  bool ligado;
+}
+
+bool carro_ligar(Carro* carro);
+void carro_desligar(Carro* carro);
+
+int main(void) {
+  for (int i = 0; i < TOTAL_DE_CARROS; i++) {
+    Carro carro = carros[i];
+
+    carro_ligar(carro);
+
+    if (carro->ligado) carro_desligar(carro);
+    else log_err("Carro %d não ligou!", i);
+  }
+
+  return 0;
+}
+```
+
 ## Conclusão
 
 Com isso, aprendemos como um programa é estruturado na linguagem C,
-declarações de `struct`s, variáveis, funções e passagem de parâmetros.
+declarações de `struct`s, variáveis, funções,
+parâmetros, listas, ponteiros, e um pouquinho de alinhamento de memória.
 
 Veja outros artigos sobre linguagens de programação:
 
