@@ -5,7 +5,7 @@
 
   const { date }: Props = $props();
 
-  const pretty = (date: any) => new Intl.DateTimeFormat(navigator.language, {
+  const pretty = (date: any) => new Intl.DateTimeFormat("en", {
     day: "numeric",
     month: "short",
     year: "numeric",
