@@ -42,4 +42,9 @@
   td, th {
     text-align: revert-layer;
   }
+
+  /* Blockquote Margin */
+  blockquote :last-child {
+    margin-bottom: 0;
+  }
 }
