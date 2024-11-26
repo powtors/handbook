@@ -4,7 +4,7 @@
 
   import { FileText } from "phosphor-svelte";
 
-  import { Timestamp } from "$lib/components";
+  import { Timestamp, Author } from "$lib/components";
   import { page } from "$app/stores";
 
   const { data } = $props();
@@ -24,7 +24,10 @@
       <a href="/{$page.params.slug}/raw">
         <FileText size="1.5rem" />
       </a>
-      <b><Timestamp {date} /></b>
+      <span>
+        <b><Timestamp {date} /></b>
+        <Author />
+      </span>
     </footer>
   </article>
 </main>
@@ -39,18 +42,9 @@
     align-items: baseline;
     justify-content: space-between;
 
-    a {
-      color: inherit;
-
-      transition: var(--pico-transition);
-
-      &:hover {
-        filter: brightness(1.375);
-      }
-    }
-
     b {
       font-weight: 500;
+      margin-right: 0.25rem;
     }
   }
 </style>

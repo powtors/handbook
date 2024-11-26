@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { Author } from "$lib/components";
+
   const { data } = $props();
 </script>
 
@@ -8,16 +10,14 @@
       <a href={post.href}>
         <h2>{post.title}</h2>
       </a>
-      <a href="https://github.com/potors">
-        <img src="https://github.com/potors.png" alt="author" />
-      </a>
+      <Author />
     </section>
   {/each}
 </main>
 
 <style lang="scss">
   main {
-    --pico-block-spacing-horizontal: 1.625rem;
+    --pico-block-spacing-horizontal: 1.625remt;
   }
 
   section {
@@ -36,19 +36,6 @@
 
     &:last-child {
       --pico-block-spacing-vertical: 0;
-    }
-  }
-
-  img {
-    width: 2rem;
-    height: 2rem;
-
-    border-radius: 30%;
-
-    transition: var(--pico-transition);
-
-    &:hover {
-      filter: brightness(1.375);
     }
   }
 </style>
