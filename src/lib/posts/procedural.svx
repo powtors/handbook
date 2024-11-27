@@ -234,6 +234,8 @@ for (int i = 0; i < TOTAL_DE_CARROS; i++) {
 # Programa Final
 
 ```c
+#include <stdbool.h>
+
 struct Carro {
   int chassi;
   bool ligado;
