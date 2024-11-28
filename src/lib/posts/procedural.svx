@@ -132,7 +132,7 @@ Agora temos que: para cada carro, ligar e desligar os motores.
 
 Nosso código de teste é apenas um intermediador da ECU para o painel de controle do carro.
 Ou seja, não temos controle do que acontece dentro do carro (simulando as funções não definidas acima).
-No entanto, ao ligar o carro a ECU nos retorna se o carro foi ou não ligado. (O carro sempre desligará)
+A variável `ligado` é responsável por dizer se o carro está, ou não, ligado.
 
 Modificaremos nosso `Carro` para:
 
@@ -146,8 +146,8 @@ struct Carro {
 E nossas funções para:
 
 ```c
-bool carro_ligar(Carro carro);
-bool carro_desligar(Carro carro);
+void carro_ligar(Carro carro);
+void carro_desligar(Carro carro);
 ```
 
 ## Listas
@@ -212,13 +212,14 @@ O que vamos fazer é ao invés de copiarmos todo o `Carro` para dentro da funç�
 
 Nosso carro fica na posição `0x00`, então diremos à função: "ligue o carro que está em 0x00", ao invés de "ligue este carro aqui".
 
-> Óbviamente em nosso programa atual a redução de carga atual é ínfima.
+> Óbviamente em nosso programa atual a redução de carga atual é ínfima, e os ganhos em performance, negligíveis.
 > Porém, no mundo real, trabalharíamos com estruturas inúmeras vezes maiores que essa.
+> E por mais que nesse caso não faça diferença, ainda assim estamos **diminuíndo pela metade** a quantidade de memória utilizada.
 
 Para aplicar estas mudanças, precisaremos alterar o código:
 
 ```c
-bool carro_ligar(Carro* carro);
+void carro_ligar(Carro* carro);
 ```
 
 Agora, ao chamar a função, utilizaremos a localização do carro, não ele mesmo:
@@ -241,7 +242,7 @@ struct Carro {
   bool ligado;
 }
 
-bool carro_ligar(Carro* carro);
+void carro_ligar(Carro* carro);
 void carro_desligar(Carro* carro);
 
 int main(void) {
@@ -261,8 +262,8 @@ int main(void) {
 ## Conclusão
 
 Com isso, aprendemos como um programa é estruturado na linguagem C,
-declarações de `struct`s, variáveis, funções,
-parâmetros, listas, ponteiros, e um pouquinho de alinhamento de memória.
+declarações de `struct`s, variáveis, funções, parâmetros,
+listas, ponteiros, e um pouquinho de alinhamento de memória.
 
 Veja outros artigos sobre linguagens de programação:
 
