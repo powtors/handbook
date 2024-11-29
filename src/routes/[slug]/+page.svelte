@@ -37,6 +37,10 @@
     --pico-typography-spacing-vertical: 0;
   }
 
+  article {
+    margin-bottom: 0;
+  }
+
   footer {
     display: flex;
     align-items: baseline;
