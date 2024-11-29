@@ -42,6 +42,10 @@
     align-items: baseline;
     justify-content: space-between;
 
+    a {
+      color: inherit;
+    }
+
     b {
       font-weight: 500;
       margin-right: 0.25rem;
