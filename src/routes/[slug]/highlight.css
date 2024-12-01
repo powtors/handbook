@@ -3,6 +3,10 @@
 code[class*="language-"],
 pre[class*="language-"] { color: #cdd6f4; }
 
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] { background: #181825; }
+
 .token.keyword { color: #cba6f7; }
 .token.builtin { color: #f38ba8; }
 .token.class-name { color: #f9e2af; }
