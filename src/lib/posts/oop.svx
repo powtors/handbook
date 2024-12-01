@@ -3,83 +3,60 @@ title: Programação Orientada a Objetos
 date: 2024-11-20
 ---
 
-A programação orientada a objetos difere da procedural sobre sua linha de pensamento.
-Em linguagens procedurais temos apenas tarefas executadas em ordem, todas diferentes umas das outras.
-Já nas orientadas a objetos, começamos a pensar em algo que executa outro.
-Podemos imaginar um animal, que come, bebe e emite som.
-Proceduralmente definiríamos assim:
+A programação orientada a objetos é o nome dado ao paradigma onde tratamos toda informação como um *objeto*.
+Um objeto é a forma mais "básica" de armazenar informação.
+Ao construirmos estruturas de dados avançadas, utilizando tipos primitivos como base, somos capazes de **extender funcionalidade**, 
+Como eu disse, tudo é um objeto. Ou seja, extendendo funcionalidade estamos *herdando* de algum outro objeto, como uma relação familiar.
 
-> [!NOTE]
-> Para entender melhor sobre programação procedural, veja a [última publicação](/procedural)
+## Abstração
 
-## Proceduralmente
-
-```c
-struct Animal {
-  enum {
-    MIADO,
-    LATIDO,
-  } som;
-};
-
-void animal_emitir_som(Animal animal);
-
-int main(void) {
-  Animal gato = { MIADO };
-  Animal cachorro = { LATIDO };
-
-  animal_emitir_som(gato);
-  animal_emitir_som(cachorro);
-
-  return 0;
-}
-```
-
-Observe que o animal é diferente, e a função que emite som é a mesma.
-
-Agora, na linguagem [Java](https://pt.wikipedia.org/wiki/Java_(linguagem_de_programação)), o mesmo programa seria escrito assim:
-
-## Orientado a Objetos
+Por exemplo, podemos ter um animal:
 
 ```java
 public abstract class Animal {
   public abstract void emitir_som();
 }
+```
 
+Mas não existe algo como um `Animal`. `Animal` é só um nome que nós, humanos, demos ao conceito.
+Por isso a palavra `abstract`. Ela diz, pelo código, que precisa ser implementada para cada `Animal`.
+Até porque cada animal emite sons diferentes.
+
+## Implementação
+
+```java
 public class Gato extends Animal {
   public void emitir_som() {
-    // mia
-  }
-}
-
-public class Cachorro extends Animal {
-  public void emitir_som() {
-    // late
-  }
-}
-
-public class Main {
-  public static void main(String[] args) {
-    Animal gato = new Gato();
-    Animal cachorro = new Cachorro();
-
-    gato.emitir_som();
-    cachorro.emitir_som();
+    System.out.println("Miau!");
   }
 }
 ```
 
-A função `main` representa igualmente ao `main` da linguagem C,
-já sobre o `Animal`, percebemos que agora o som é emitido por ele mesmo, não por um emissor externo.
+Então, extendendo a funcionalidade de um `Animal`, definimos o que é um `Gato`.
 
-A grande diferença aqui é que invertemos a ordem dos *estados*. Antes, tínhamos
+Agora, ao utilizarmos essa classe em nosso programa, não precisamos saber se o `Animal` é um `Gato`, um `Cachorro`, um `Elefante`...
+E mesmo assim sabemos que ele *pode* emitir som, já que é um animal.
 
+```java
+Animal animal = new Gato();
+
+animal.emitir_som();
+}
+```
+
+## Estado
+
+Em java, por exemplo, não temos variáveis globais de verdade.
+Não podemos simplesmente criar um número mágico disponível em toda nossa aplicação.
+Podemos sim, criar variáveis estáticas --- sempre disponíveis, mas elas ainda estão acopladas em uma classe.
+
+A grande diferença, é que modificamos o estado de um objeto internamente,
+sendo mais fácil gerenciar a responsabilidade de cada trecho de código.
 
 ## Conclusão
 
 Com isso, aprendemos como um programa é estruturado na linguagem Java,
-o que são objetos, como o estado é manipulado por linguagens orientadas a objetos,
-...
+o que são objetos e como o estado é manipulado por linguagens orientadas a objetos.
 
 Veja outros artigos sobre linguagens de programação:
 

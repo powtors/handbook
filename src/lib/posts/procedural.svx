@@ -263,7 +263,7 @@ int main(void) {
 
 Com isso, aprendemos como um programa é estruturado na linguagem C,
 declarações de `struct`s, variáveis, funções, parâmetros,
-listas, ponteiros, e um pouquinho de alinhamento de memória.
+listas, ponteiros e um pouquinho de alinhamento de memória.
 
 Veja outros artigos sobre linguagens de programação:
 
