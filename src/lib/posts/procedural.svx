@@ -261,11 +261,13 @@ int main(void) {
 
 ## Conclusão
 
-Com isso, aprendemos como um programa é estruturado na linguagem C,
+Com isso, aprendemos como um programa é estruturado na linguagem [C](https://en.wikipedia.org/wiki/C_(programming_language)),
 declarações de `struct`s, variáveis, funções, parâmetros,
 listas, ponteiros e um pouquinho de alinhamento de memória.
 
+## Ver mais
+
 Veja outros artigos sobre linguagens de programação:
 
-- [Orientada a Objeto](/oop)
-- [Funcional](/functional)
+- [Programação Orientada a Objeto](/oop)
+- [Programação Funcional](/functional)

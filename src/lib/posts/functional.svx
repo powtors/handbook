@@ -1,0 +1,174 @@
+---
+title: Programação Funcional
+date: 2024-12-01
+---
+
+<style>
+img {
+  border-radius: 0.75rem;
+}
+</style>
+
+A programação funcional é de longe uma das mais divertidas entre as escritas até agora. ([veja mais](#ver-mais) sobre)
+Ignore tudo que você aprendeu nos artigos da [procedural](/procedural) e da [orientada a objeto](/oop).
+
+> As exemplificações deste artigo só foram possíveis por inspirações de pessoas como
+> [ThePrimeagen](https://www.youtube.com/@ThePrimeTimeagen),
+> [CodeAesthetic](https://www.youtube.com/@CodeAesthetic),
+> [Fireship](https://www.youtube.com/@Fireship),
+> e [Coderized](https://www.youtube.com/@coderized).
+
+## Funções
+
+O que são funções? Tão quão na matemática, funções são expressoes que transformam uma entrada X em uma saída Y.
+
+![input-output](/functional/input_output.svg)
+
+## Fundamentos
+
+1. Variáveis são [imutáveis](#imutabilidade)
+2. Funções podem ser passadas como [parâmetros](#funções-como-parâmetros) para outras funções
+3. Funções podem ser [retornadas](#retornando-funções) de outras funções
+4. [Pureza](#pureza-de-funções) de funções
+
+## Imutabilidade
+
+Todas as variáveis são imutáveis.
+
+Quando atribuímos um valor a uma variável, não estamos modificando ela.
+Estamos criando uma nova, e descartando o valor antigo.
+
+## Funções como parâmetros
+
+Podemos dar a uma função outra função como parâmetro.
+Isto modulariza o código de maneira em que a leitura do código fica mais fácil,
+os testes ficam mais simples e a depuração, trivial.
+
+Uma das funcionalidades mais legais da linguagem [Elixir](https://elixir-lang.org)
+é a múltipla definição de funções, que serve como [*pattern matching*.](https://en.wikipedia.org/wiki/Pattern_matching)
+
+```elixir
+def filtrar([], _), do: []
+def filtrar([argumento | lista], condicao) do
+  if condicao.(argumento) do
+    [argumento | filtrar(lista, condicao)]
+  else
+    filtrar(lista, condicao)
+  end
+end
+```
+
+Agora temos uma função em elixir que filtra os itens de uma lista dada uma condição,
+que por sinal é uma função, que recebe o item da lista que está sendo filtrado.
+
+Não se assuste com o desconhecido, se nunca viu nenhum código em elixir. É até que bem simples (e bem útil).
+
+O que está acontecendo é:
+
+1. Na primeira definição, se a lista estiver vazia, retornaremos uma lista vazia.
+   Este é nosso caso *base*. Onde a função sabe quando parar, nesse caso, quando não houverem itens para filtrar.
+
+2. Já na segunda, estamos retirando o primeiro `argumento` da `lista` no parâmetro `[argumento | lista]`.
+   Logo após, se a condição for verdadeira, retornamos uma lista com ou sem o `argumento`, respectivamente.
+
+   > `[x | y]` como parâmetro de uma função separa o `x` (item) de uma lista `y`.
+   > No entanto, a mesma linha em meio ao código significa que estamos **adicionando um item ao início dela**. [(documentação oficial)](https://hexdocs.pm/elixir/1.17.3/List.html)
+
+É sempre interessante visualizar o que está acontecendo, por exemplo:
+
+1. Criamos uma lista: [1, 2, 3, 4, 5]
+2. Chamamos a função: `[1, 2, 3, 4, 5] |> filtrar(fn x -> x > 2 end)`
+    1. `1` -> `[2, 3, 4, 5]`
+    2. `2` -> `[3, 4, 5]`
+    3. `3` -> `[4, 5]`
+    4. `4` -> `[5]`
+    5. `5` -> `[]`
+    6. Nenhum item para filtrar
+    7. `5 > 2`? Sim: `[5 | ...]` -> `[5]`
+    8. `4 > 2`? Sim: `[4 | [5 | ...]]` -> `[4, 5]`
+    9. `3 > 2`? Sim: `[3 | [4 | [5 | ...]]]` -> `[3, 4, 5]`
+    10. `2 > 2`? Não: `[...]` -> `[3, 4, 5]`
+    11. `1 > 2`? Não: `[...]` -> `[3, 4, 5]`
+    12. `[3, 4, 5]`
+
+## Retornando funções
+
+Podemos também retornar funções, deste modo salvamos o estado temporariamente e podemos reutilizá-lo a nosso favor.
+
+```elixir
+def multiplicar(x), do: fn y -> x * y end
+```
+
+Desta forma, se executarmos `multiplicar(2).(5)`, obteremos `10` como resultado.
+
+Mas a grande vantagem é que podemos ter uma variável que carrega a função:
+
+```elixir
+multiplicar_por_dois = multiplicar(2)
+```
+
+Agora, sempre que chamarmos `multiplicar_por_dois`, bom... o nome é bem sugestivo.
+
+## Pureza de funções
+
+Na programação funcional existe um conceito bem simples de "pureza de funções".
+Na prática, o que isso diz é se uma função sempre retornará a mesma saída dada uma mesma entrada.
+
+### Funções puras
+
+Estas são bem simples:
+
+```elixir
+def calcular(x), do: x + x
+```
+
+Essa função sempre retorna o dobro de `x`.
+
+### Funções impuras
+
+Ao executarmos uma função, se algum valor externo alterar a execução do código,
+ou o nosso código alterar algum valor externo, dizemos que esta função é impura.
+
+Diz-se, então, que essas funções causam *efeitos colaterais*, ou em inglês, *side-effects*.
+Por exemplo, em javascript:
+
+```javascript
+let n = 0;
+
+function calcular(x) {
+  const valor = x + n;
+
+  n = x;
+
+  return valor;
+}
+```
+
+Agora nossa função retorna valores diferentes, dependendo dos anteriores.
+
+Se em algum momento eu chamar a função `calcular` com o valor `2`, e depois `2` denovo, na primeira vez eu teria '2' e na segunda, `4`.
+Os valores mudaram, mesmo que a entrada não.
+
+O inverso também se aplica, se nossa função modificar algum valor externo ela já não é mais pura.
+Por coincidência, esta função altera, sim, um valor externo. A variável `n`.
+
+Mas um ótimo exemplo são *displays* de vídeo. Ao renderizarmos uma imagem em uma tela, estamos modificando um estado externo:
+os valores dos pixeis da tela! Por isso que em diversas linguagens funcionais funções relacionadas à saídas em terminais ou *displays*,
+são restringidas ou, pelo menos, tratadas diferentes das outras.
+
+> Um exemplo em haskell é que para imprimir uma mensagem no console, é necessário que a chamada da função esteja
+> dentro de uma função que retorne um [*monad*](https://en.wikipedia.org/wiki/Monad_(functional_programming)) que
+> permita causar efeitos colaterais. (`main :: IO()`)
+
+## Conclusão
+
+Com isso, aprendemos como um programa é estruturado na linguagem [Elixir](https://elixir-lang.org),
+conceitos básicos da programação funcional como imutabilidade, recursividade, funções como parâmetros,
+funções que retornam funções, pureza de funções, efeitos colaterais e escopos.
+
+## Ver mais
+
+Veja outros artigos sobre linguagens de programação:
+
+- [Programação Procedural](/procedural)
+- [Programação Orientada a Objeto](/oop)

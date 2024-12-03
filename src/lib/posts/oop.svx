@@ -55,10 +55,12 @@ sendo mais fácil gerenciar a responsabilidade de cada trecho de código.
 
 ## Conclusão
 
-Com isso, aprendemos como um programa é estruturado na linguagem Java,
+Com isso, aprendemos como um programa é estruturado na linguagem [Java](https://dev.java),
 o que são objetos e como o estado é manipulado por linguagens orientadas a objetos.
+
+## Ver mais
 
 Veja outros artigos sobre linguagens de programação:
 
-- [Procedural](/procedural)
-- [Funcional](/functional)
+- [Programação Procedural](/procedural)
+- [Programação Funcional](/functional)
