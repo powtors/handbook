@@ -269,5 +269,5 @@ listas, ponteiros e um pouquinho de alinhamento de memória.
 
 Veja outros artigos sobre linguagens de programação:
 
-- [Programação Orientada a Objeto](/oop)
+- [Programação Orientada a Objetos](/oop)
 - [Programação Funcional](/functional)
