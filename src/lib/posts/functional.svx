@@ -170,5 +170,5 @@ funções que retornam funções, pureza de funções, efeitos colaterais e esco
 
 Veja outros artigos sobre linguagens de programação:
 
-- [Programação Procedural](/procedural)
-- [Programação Orientada a Objetos](/oop)
+- [Programação Procedural](/post/procedural)
+- [Programação Orientada a Objetos](/post/oop)

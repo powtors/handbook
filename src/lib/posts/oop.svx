@@ -41,7 +41,6 @@ E mesmo assim sabemos que ele *pode* emitir som, já que é um animal.
 Animal animal = new Gato();
 
 animal.emitir_som();
-}
 ```
 
 ## Estado
@@ -62,5 +61,5 @@ o que são objetos e como o estado é manipulado por linguagens orientadas a obj
 
 Veja outros artigos sobre linguagens de programação:
 
-- [Programação Procedural](/procedural)
-- [Programação Funcional](/functional)
+- [Programação Procedural](/post/procedural)
+- [Programação Funcional](/post/functional)
