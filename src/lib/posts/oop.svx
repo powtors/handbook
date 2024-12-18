@@ -4,7 +4,7 @@ date: 2024-11-20
 ---
 
 A programação orientada a objetos é o nome dado ao paradigma onde tratamos toda informação como um *objeto*.
-Um objeto é a forma mais "básica" de armazenar informação.
+Um objeto é a forma mais "básica" de armazenar informação. E uma instância de certa *classe* é um objeto.
 Ao construirmos estruturas de dados avançadas, utilizando tipos primitivos como base, somos capazes de **extender funcionalidade**, 
 Como eu disse, tudo é um objeto. Ou seja, extendendo funcionalidade estamos *herdando* de algum outro objeto, como uma relação familiar.
 
@@ -22,7 +22,7 @@ Mas não existe algo como um `Animal`. `Animal` é só um nome que nós, humanos
 Por isso a palavra `abstract`. Ela diz, pelo código, que precisa ser implementada para cada `Animal`.
 Até porque cada animal emite sons diferentes.
 
-## Implementação
+## Herança
 
 ```java
 public class Gato extends Animal {
@@ -30,18 +30,58 @@ public class Gato extends Animal {
     System.out.println("Miau!");
   }
 }
+
+public class Cachorro extends Animal {
+  public void emitir_som() {
+    System.out.println("Au!");
+  }
+}
 ```
 
-Então, extendendo a funcionalidade de um `Animal`, definimos o que é um `Gato`.
+Então, extendendo a funcionalidade de um `Animal`, definimos o que é um `Gato` e um `Cachorro`.
 
 Agora, ao utilizarmos essa classe em nosso programa, não precisamos saber se o `Animal` é um `Gato`, um `Cachorro`, um `Elefante`...
 E mesmo assim sabemos que ele *pode* emitir som, já que é um animal.
 
 ```java
-Animal animal = new Gato();
+Animal gato = new Gato();
+Animal cachorro = new Cachorro();
 
-animal.emitir_som();
+gato.emitir_som(); // Miau!
+cachorro.emitir_som(); // Au!
 ```
+
+## Contratos 
+
+Podemos, também, resolver esse problema de uma forma diferente:
+
+```java
+public class Animal {}
+
+public class Felino extends Animal {
+  public void emitir_som() {
+    System.out.println("Miau!");
+  }
+}
+
+public interface Fofura {
+  public void atrair_humano();
+}
+
+public class Gato extends Felino implements Fofura {
+  public void atrair_humano() {
+    // implementação
+  }
+}
+
+// https://pt.wikipedia.org/wiki/Felis_manul
+public class Manul extends Felino {}
+```
+
+Agora, `Animal` apenas representa uma característica comum: todos são animais.
+`Felino`s podem emitir sons. Porém, apenas `Gato`s são fofos e podem `atrair_humano`s.
+
+Lógico que podemos ter mais animais fofos além do `Gato`, mas em nenhum momento temos uma espécie que sempre será fofa.
 
 ## Estado
 
